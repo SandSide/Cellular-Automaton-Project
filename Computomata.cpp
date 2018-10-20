@@ -35,6 +35,10 @@ vector<int> generateFirstGeneration(int x)
 	//Stores the generation.
 	vector<int> firstGen(x);
 
+	//Reference: www.programiz.com/cpp-programming/library-function/cstdlib/srand
+	//Will make a seed with the number of seconds since 00:00 Jan 1 1970 UTC.
+	srand(time(0));
+
 	//Will loop for the entire row.
 	for (int i = 0; i < x; ++i)
 	{
@@ -76,10 +80,10 @@ int randomRule()
 
 int main()
 {
-	vector<int> test = calculateBinary(42);
-	for (int i = 0; i < 8; ++i)
+	vector<int> trry = generateFirstGeneration(test);
+	for (int i = 0; i < test; ++i)
 	{
-		cout << test[i];
+		cout << trry[i];
 	}
 	cout << endl;
 	return 0;
