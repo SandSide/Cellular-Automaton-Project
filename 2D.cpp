@@ -109,10 +109,54 @@ void computeGenerations()
 			for(int j = 0; j <sizeX ; j++)
 			{
 
-				aliveNeb = 0;
-				aliveNeb += (previousGeneration[i-1][j-1] + previousGeneration[i-1][j] + previousGeneration[i-1][j+1]);
-				aliveNeb += (previousGeneration[i][j-1] + previousGeneration[i][j+1]);
-				aliveNeb += (previousGeneration[i+1][j-1] + previousGeneration[i+1][j] + previousGeneration[i+1][j+1]);
+				/*
+				if(i == 0 && j == 0)
+				{
+
+					aliveNeb = 0;
+					aliveNeb += (previousGeneration[sizeY-1][sizeX-1] + previousGeneration[sizeY-1][j] + previousGeneration[sizeY-1][j+1]);
+					aliveNeb += (previousGeneration[i][sizeX-1] + previousGeneration[i][j+1]);
+					aliveNeb += (previousGeneration[i+1][sizeX-1] + previousGeneration[i+1][j] + previousGeneration[i+1][j+1]);
+
+				}
+				else if (i == (sizeY-1) && j == 0)
+				{
+
+					aliveNeb = 0;
+					aliveNeb += (previousGeneration[i+1][sizeX-1] + previousGeneration[i+1][j] + previousGeneration[i+1][j+1]);
+					aliveNeb += (previousGeneration[i][sizeX-1] + previousGeneration[i][j+1]);
+					aliveNeb += (previousGeneration[0][sizeX-1] + previousGeneration[0][j] + previousGeneration[0][j+1]);
+
+				}
+				else if(i == 0)
+				{
+
+					aliveNeb = 0;
+					aliveNeb += (previousGeneration[i-1][sizeX-1] + previousGeneration[i-1][j] + previousGeneration[i-1][j+1]);
+					aliveNeb += (previousGeneration[i][sizeX-1] + previousGeneration[i][j+1]);
+					aliveNeb += (previousGeneration[i+1][sizeX-1] + previousGeneration[i+1][j] + previousGeneration[i+1][j+1]);
+
+
+				}
+				else if (i == 0 && j == (sizeX -1))
+				{
+
+					aliveNeb = 0;
+					aliveNeb += (previousGeneration[sizeY-1][j-1] + previousGeneration[sizeY-1][j] + previousGeneration[sizeY-1][j+1]);
+					aliveNeb += (previousGeneration[i][j-1] + previousGeneration[i][j+1]);
+					aliveNeb += (previousGeneration[i+1][j-1] + previousGeneration[i+1][j] + previousGeneration[i+1][j+1]);
+
+				}
+				*/
+				//else
+				//{
+
+					aliveNeb = 0;
+					aliveNeb += (previousGeneration[i-1][j-1] + previousGeneration[i-1][j] + previousGeneration[i-1][j+1]);
+					aliveNeb += (previousGeneration[i][j-1] + previousGeneration[i][j+1]);
+					aliveNeb += (previousGeneration[i+1][j-1] + previousGeneration[i+1][j] + previousGeneration[i+1][j+1]);
+
+			//	}
 
 				if(previousGeneration[i][j] == 1)
 				{
