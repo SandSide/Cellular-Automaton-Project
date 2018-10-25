@@ -32,8 +32,8 @@ void computeGenerations()
 {
 
 	int aliveNeb = 0;
-	int sizeX = 40;
-	int sizeY = 40;
+	const int sizeX = 40;
+	const int sizeY = 40;
 
 	int previousGeneration[sizeY][sizeX];
 	int nextGeneration[sizeY][sizeX];
@@ -64,7 +64,6 @@ void computeGenerations()
 
 		}
 
-
 	}
 
 
@@ -83,13 +82,13 @@ void computeGenerations()
 			if (previousGeneration[i][j] == 1)
 			{
 
-				cout << red << previousGeneration[i][j];
+				cout << "\u25A1" << previousGeneration[i][j];
 
 			}
 			else
 			{
 
-				cout << reset << previousGeneration[i][j];
+				cout << "\u25A0" << previousGeneration[i][j];
 
 			}
 
@@ -109,7 +108,6 @@ void computeGenerations()
 			for(int j = 0; j <sizeX ; j++)
 			{
 
-				/*
 				if(i == 0 && j == 0)
 				{
 
@@ -119,6 +117,7 @@ void computeGenerations()
 					aliveNeb += (previousGeneration[i+1][sizeX-1] + previousGeneration[i+1][j] + previousGeneration[i+1][j+1]);
 
 				}
+
 				else if (i == (sizeY-1) && j == 0)
 				{
 
@@ -128,7 +127,49 @@ void computeGenerations()
 					aliveNeb += (previousGeneration[0][sizeX-1] + previousGeneration[0][j] + previousGeneration[0][j+1]);
 
 				}
+
+				else if (i == 0 && j == (sizeX - 1))
+				{
+
+					aliveNeb = 0;
+					aliveNeb += (previousGeneration[sizeY-1][j-1] + previousGeneration[sizeY-1][j] + previousGeneration[sizeY-1][0]);
+					aliveNeb += (previousGeneration[i][j-1] + previousGeneration[i][0]);
+					aliveNeb += (previousGeneration[i+1][j-1] + previousGeneration[i+1][j] + previousGeneration[i+1][0]);
+
+				}
+
+				else if (i == (sizeY-1) && j == (sizeX - 1))
+				{
+
+					aliveNeb = 0;
+					aliveNeb += (previousGeneration[i-1][j-1] + previousGeneration[i-1][j] + previousGeneration[i-1][0]);
+					aliveNeb += (previousGeneration[i][j-1] + previousGeneration[i][0]);
+					aliveNeb += (previousGeneration[0][j-1] + previousGeneration[0][j] + previousGeneration[0][0]);
+
+				}
+
 				else if(i == 0)
+				{
+
+					aliveNeb = 0;
+					aliveNeb += (previousGeneration[sizeY-1][j-1] + previousGeneration[sizeY-1][j] + previousGeneration[sizeY-1][j+1]);
+					aliveNeb += (previousGeneration[i][j-1] + previousGeneration[i][j+1]);
+					aliveNeb += (previousGeneration[i+1][j+1] + previousGeneration[i+1][j] + previousGeneration[i+1][j+1]);
+
+
+				}
+
+				else if(i == sizeY -1)
+				{
+
+					aliveNeb = 0;
+					aliveNeb += (previousGeneration[i-1][j-1] + previousGeneration[i-1][j] + previousGeneration[i-1][j+1]);
+					aliveNeb += (previousGeneration[i][j-1] + previousGeneration[i][j+1]);
+					aliveNeb += (previousGeneration[0][j+1] + previousGeneration[0][j] + previousGeneration[0][j+1]);
+
+				}
+
+				else if(j == 0)
 				{
 
 					aliveNeb = 0;
@@ -136,27 +177,26 @@ void computeGenerations()
 					aliveNeb += (previousGeneration[i][sizeX-1] + previousGeneration[i][j+1]);
 					aliveNeb += (previousGeneration[i+1][sizeX-1] + previousGeneration[i+1][j] + previousGeneration[i+1][j+1]);
 
-
 				}
-				else if (i == 0 && j == (sizeX -1))
+
+				else if(j == sizeX-1)
 				{
 
 					aliveNeb = 0;
-					aliveNeb += (previousGeneration[sizeY-1][j-1] + previousGeneration[sizeY-1][j] + previousGeneration[sizeY-1][j+1]);
-					aliveNeb += (previousGeneration[i][j-1] + previousGeneration[i][j+1]);
-					aliveNeb += (previousGeneration[i+1][j-1] + previousGeneration[i+1][j] + previousGeneration[i+1][j+1]);
+					aliveNeb += (previousGeneration[i-1][j-1] + previousGeneration[i-1][j] + previousGeneration[i-1][0]);
+					aliveNeb += (previousGeneration[i][j-1] + previousGeneration[i][0]);
+					aliveNeb += (previousGeneration[i+1][j-1] + previousGeneration[i+1][j] + previousGeneration[i+1][0]);
 
 				}
-				*/
-				//else
-				//{
+				else
+				{
 
 					aliveNeb = 0;
 					aliveNeb += (previousGeneration[i-1][j-1] + previousGeneration[i-1][j] + previousGeneration[i-1][j+1]);
 					aliveNeb += (previousGeneration[i][j-1] + previousGeneration[i][j+1]);
 					aliveNeb += (previousGeneration[i+1][j-1] + previousGeneration[i+1][j] + previousGeneration[i+1][j+1]);
 
-			//	}
+				}
 
 				if(previousGeneration[i][j] == 1)
 				{
@@ -211,13 +251,13 @@ void computeGenerations()
 				if (nextGeneration[i][j] == 1)
 				{
 
-					cout << red << nextGeneration[i][j];
+					cout << "\u25A1" << nextGeneration[i][j];
 
 				}
 				else
 				{
 
-					cout << reset << nextGeneration[i][j];
+					cout << "\u25A0" << nextGeneration[i][j];
 
 				}
 
