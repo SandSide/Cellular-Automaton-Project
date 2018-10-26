@@ -45,28 +45,21 @@ void menu()
 	// Under the "cin Functions" Sections
 	while(!(cin >> userOption))
 	{
-
 		// Send an error message
 		cerr << "Error: A non whole number was entered \nPlease enter a whole number:" << endl;
 		cin.clear();
 		cin.ignore(100, '\n');
-
 	}
 
 	// Process the users option
 	if(userOption == 1)
 	{
-
 		// Run the Processs
 		generateCellularAutomata();
-
-
 	}
 	else if (userOption ==0)
 	{
-		
 		exit(0);
-
 	}
 	else
 	{
@@ -74,94 +67,125 @@ void menu()
 		cout << "Error: Your entered something that was not one of the inputs!" << endl; 
 		cout << "Enter a number form the options below" << endl;
 		cout << "" << endl;
-
 	}
-
 }
 
 /*
-	
 	Collects all data needed to run ComputeGenerations, which will create a Cellular Automata.
-
 */
 void generateCellularAutomata()
 {
-
-	// make local varibles
-	int size;
+	//Make local varibles
+ 	int size;
 	int amount;
 
-	// get size and nuber of generations
-	getDimensions(size, amount);
+	//Get size and nuber of generations
+ 	getDimensions(size,amount);
 
-	// takes 1 away from ammount (to compensate for first generation)
-	amount--;
-
-	// creates and initialises previous and next generation arrays
-	int array1[size] = {};
-	int array2[size] = {};
+	//Creates and initialises previous and next generation arrays.
+	int *array1 = new int[size];
+	int *array2 = new int[size];
 
 	//Will recieve the rule the user wants to execute the automata with.
 	getRuleInput();
 
-	// calls computeGenerations
+	//Calls computeGenerations
 	computeGenerations(array1, array2, amount, size);
+}
 
+/*
+Will randomly select values to use for the grid size.
+Returns an array with the x and y size of the grid.
+*/
+int *randomGridSize()
+{
+	//Allocates memory for an array which will store the grid size.
+	int* grid = new int[2];
+
+	//Seeds the random value generator with the time.
+	srand(time(0));
+	//Set x and y values in the grid.
+	grid[0] = rand() % 199 + 2;
+	grid[1] = rand() % 44 + 2;
+	return grid;
 }
 
 /*
 	Recieves user input to determine size and number of generations.
-
 	Parameter: &size; Refrence to store user input.
 	Parameter: &generations. Refrence to store user input.
-	
 */
 void getDimensions(int &size,int &generations)
 {
+	//Gets random grid sizes to allow user to select.
+	int grid1[2] = {};
+	int grid2[2] = {};
+	int grid3[2] = {};
+	//grid1 = randomGridSize();
+
+	//Will allow user to select a grid size.
+	int choice;
 	cout << "Select a grid size:" << endl;
 	cout << "1) 8x8" << endl;
 	cout << "2) 9x9" << endl;
 	cout << "3) 10x10" << endl;
+	//cout << "4) " << grid1[0] << "x" << grid1[1] << endl;
+	//cout << "5) " << grid2[0] << "x" << grid2[1] << endl;
+	//cout << "6) " << grid3[0] << "x" << grid3[1] << endl;
+	cout << "7) Custom grid size" << endl;
+	cin >> choice;
 	
+	while(choice > 4 && choice < 1)
+	{
+		cout << "Invalid option selected, please select a valid option (1-4)." << endl;
+		cin >> choice;
+	}
 	
-	
 
-	switch()
+	switch(choice)
 	{
+		case 1: 
+			size = 8;
+			generations = 8;
+		break;
+		case 2: 
+			size = 9;
+			generations = 9;
+		break;
+		case 3: 
+			size = 10;
+			generations = 10;
+		break;
+		case 4:
+			// ask for user input
+			cout << "Please enter the size of the generations: " << endl;
+			cin >> size;
 
+			// while the size entered for the array is less than 2
+			while(size < 2)
+			{
+				// ask user to enter a number
+				cout << "The size you entered is too small. Please enter a size greater than 1." << endl;
+				cout << "Please enter the size of the generations: " << endl;
+				cin >> size;
+			}
+
+			cout << endl;
+
+			// ask for user input
+			cout << "Please enter the number of generations you want to create: " << endl;
+			cin >> generations;
+
+			// while the number entered for number of generations is less than 1
+			while(generations < 1)
+			{
+				// ask user to enter a number
+				cout << "The number you entered is too small. Please enter a size greater than 0." << endl;
+				cout << "Please enter the size of the generations: " << endl;
+				cin >> generations;
+			}
+		break;
 	}
-	// ask for user input
-	cout << "Please enter the size of the generations: " << endl;
-	cin >> size;
-
-	// while the size entered for the array is less than 2
-	while(size < 2)
-	{
-
-		// ask user to enter a number
-		cout << "The size you entered is too small. Please enter a size greater than 1." << endl;
-		cout << "Please enter the size of the generations: " << endl;
-		cin >> size;
-
-	}
-
-	cout << endl;
-
-	// ask for user input
-	cout << "Please enter the number of generations you want to create: " << endl;
-	cin >> generations;
-
-	// while the number entered for number of generations is less than 1
-	while(generations < 1)
-	{
-
-		// ask user to enter a number
-		cout << "The number you entered is too small. Please enter a size greater than 0." << endl;
-		cout << "Please enter the size of the generations: " << endl;
-		cin >> generations;
-
-	}
-
 }
 
 /*
@@ -200,7 +224,6 @@ void getRuleInput()
 
 }
 
-
 //Will calculate the binary value of a decimal number. Will fill an array with the values representing the binary value of the input decimal number.
 //val is the number being converted.
 void calculateBinary(int arr[8],int val)
@@ -230,10 +253,9 @@ void calculateBinary(int arr[8],int val)
 */
 void computeGenerations(int nextGeneration[], int previousGeneration[], int nGenerations, int sizeGeneration)
 {
-
 	// varaible will store an int which is the total of next 3 varaibles.
 	int boxPattern = 0;
-	int prevBox = 0; // represents 4 bit value
+	int prevBox = 0; // represents 4 bit valuecomputeGen
 	int currBox = 0; // represents 2 bit value
 	int nextBox = 0; // represents 1 bit value
 
@@ -321,7 +343,7 @@ void computeGenerations(int nextGeneration[], int previousGeneration[], int nGen
 	}	
 
 	//Will clear rule array making it store 0.
-	memset(rule,0,8);
+	memset(rule,0,7);
 }
 
 /*
@@ -380,7 +402,7 @@ void generateFirstGeneration(int x, int gen[])
 	srand(time(0));
 
 	//Will loop for the entire row.
-	for (int i = 0; i < size; ++i)
+	for (int i = 0; i < x; ++i)
 	{
 		//Will pick 1 or 0.
 		gen[i] = rand() % 2;
