@@ -287,6 +287,11 @@ int randomRule()
 	return rule;
 }
 
+void binaryToInt()
+{
+	
+}
+
 /*
 	
 	Gets integer user input to convert into binary and store in the parameter varaible.
@@ -309,6 +314,7 @@ void getRuleInput()
 	cout << "6) Rule " << rule1 << endl;
 	cout << "7) Rule " << rule2 << endl;
 	cout << "8) Custom Rule" << endl;
+	cout << "9) Input Rule as Binary value" << endl;
 
 	cin >> choice; 
 
@@ -357,6 +363,9 @@ void getRuleInput()
 			}
 
 			cout << endl;
+		break;
+		case 9:
+			cout << "Type a binary number" << endl;
 		break;
 	}
 
