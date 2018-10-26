@@ -36,6 +36,9 @@ int rule[8] = {};
 void menu()
 {
 
+	//Seeds the random value generator for all random value generation.
+	srand(time(0));
+	
 	int userOption;
 
 	// Display the options to the user
@@ -118,8 +121,6 @@ void getDimensions(int &size,int &generations)
 	int grid1[2] = {};
 	int grid2[2] = {};
 	int grid3[2] = {};
-	//Seeds the random value generator with the time to ensure the same values aren't generated within the same second.
-	srand(time(0));
 	randomGridSize(grid1);
 	randomGridSize(grid2);
 	randomGridSize(grid3);
@@ -395,12 +396,9 @@ void displayGeneration(int generation[], int size)
 
 
 //Will select a random decimal number to use as the rule.
+//@return rule The decimal value of the rule.
 int randomRule()
 {
-	//Reference: www.programiz.com/cpp-programming/library-function/cstdlib/srand
-	//Will make a seed with the number of seconds since 00:00 Jan 1 1970 UTC.
-	srand(time(0));
-
 	int rule = rand() % 256;
 	return rule;
 }
@@ -410,10 +408,6 @@ int randomRule()
 //@param gen[] This is the array random values are being assigned to.
 void generateFirstGeneration(int x, int gen[])
 {
-	//Reference: www.programiz.com/cpp-programming/library-function/cstdlib/srand
-	//Will make a seed with the number of seconds since 00:00 Jan 1 1970 UTC.
-	srand(time(0));
-
 	//Will loop for the entire row.
 	for (int i = 0; i < x; ++i)
 	{
