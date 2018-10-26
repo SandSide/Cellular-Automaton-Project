@@ -279,6 +279,13 @@ void getDimensions(int &size,int &generations)
 
 }
 
+//	Will select a random decimal number to use as the rule.
+//	@return rule The decimal value of the rule.
+int randomRule()
+{
+	int rule = rand() % 256;
+	return rule;
+}
 
 /*
 	
@@ -290,32 +297,71 @@ void getDimensions(int &size,int &generations)
 */
 void getRuleInput()
 {
+	int choice;
+	// 
+	int rule0 = randomRule(), rule1 = randomRule(), rule2 = randomRule();
+	cout << "Select a rule to use." << endl;
+	cout << "1) Rule 30" << endl;
+	cout << "2) Rule 255" << endl; 
+	cout << "3) Rule 0" << endl;
+	cout << "4) Rule 45" << endl;
+	cout << "5) Rule " << rule0 << endl;
+	cout << "6) Rule " << rule1 << endl;
+	cout << "7) Rule " << rule2 << endl;
+	cout << "8) Custom Rule" << endl;
+
+	cin >> choice; 
 
 	// store integer
 	int ruleN;
 
-	cout << "\nPlease enter the rule: " << endl;
-	cin >> ruleN;
-
-	// while the rule enetred is not between 0 and 255
-	while(ruleN < 0 || ruleN >255 || !cin)
+	switch(choice)
 	{
+		case 1:
+			ruleN = 30;
+		break;
+		case 2:
+			ruleN = 255;
+		break;
+		case 3:
+			ruleN = 0;
+		break;
+		case 4:
+			ruleN = 45;
+		break;
+		case 5:
+			ruleN = rule0;
+		break;
+		case 6:
+			ruleN = rule1;
+		break;
+		case 7:
+			ruleN = rule2;
+		break;
+		case 8:
+			cout << "\nPlease enter the rule: " << endl;
+			cin >> ruleN;
 
-		cin.clear();
-		cin.ignore(); // skips stream data
+			// while the rule enetred is not between 0 and 255
+			while(ruleN < 0 || ruleN >255 || !cin)
+			{
 
-		// ask user to enter a number
-		cout << "\nThe rule you entered is invalid. Please enter a vlue between 0-255." << endl;
-		cout << "Please enter the rule: " << endl;
-		cin >> ruleN;
+				cin.clear();
+				cin.ignore(); // skips stream data
 
+				// ask user to enter a number
+				cout << "\nThe rule you entered is invalid. Please enter a vlue between 0-255." << endl;
+				cout << "Please enter the rule: " << endl;
+				cin >> ruleN;
+
+			}
+
+			cout << endl;
+		break;
 	}
-
-	cout << endl;
 
 	// calculate the binary number of the integer
 	calculateBinary(rule, ruleN);
-
 }
 
 //Will calculate the binary value of a decimal number. Will fill an array with the values representing the binary value of the input decimal number.
@@ -476,15 +522,6 @@ void displayGeneration(int generation[], int size)
 
 }
 
-
-//	Will select a random decimal number to use as the rule.
-//	@return rule The decimal value of the rule.
-int randomRule()
-{
-	int rule = rand() % 256;
-	return rule;
-}
-
 //	Will randomly generate the first generation.
 //	@param x The size of the generation.
 //	@param gen[] This is the array random values are being assigned to.
@@ -511,7 +548,7 @@ void generateGameOfLife()
 	int aliveNeb = 0;
 
 	// definining the size of the array
-	int size = 40;
+	const int size = 40;
 	const int sizeX = size;
 	const int sizeY = size;
 
