@@ -4,6 +4,10 @@
 #include <iostream>
 #include <chrono>
 #include <thread>
+#include <random>
+#include <cmath>
+#include <cstdlib>
+#include <cstring>
 
 using namespace std;
 
@@ -20,11 +24,12 @@ void menu();
 void generateCellularAutomata();
 void getDimensions(int &size, int &generations);
 void initGenerations(int array[], int size);
-void getRule(int rule[8]);
+void getRuleInput();
 void calculateBinary(int rule[8],int val);
-void computeGenerations(int nextGeneration[], int previousGeneration[], int rule[], int nGenerations, int sizeGeneration);
+void computeGenerations(int nextGeneration[], int previousGeneration[], int nGenerations, int sizeGeneration);
 void displayGeneration(int generation[], int size);
 void binary2Number(int binaryN[8]);
 void computeGameOfLife();
+void generateGameOfLife();
 
 #endif
