@@ -4,6 +4,8 @@
 #include <cmath>
 #include <cstdlib>
 #include <cstring>
+#include <thread>
+#include <chrono>
 
 using namespace std;
 
@@ -96,18 +98,16 @@ void generateCellularAutomata()
 /*
 Will randomly select values to use for the grid size.
 Returns an array with the x and y size of the grid.
+@param grid This is the input grid
 */
-int *randomGridSize()
+void randomGridSize(int grid[2])
 {
-	//Allocates memory for an array which will store the grid size.
-	int* grid = new int[2];
-
 	//Seeds the random value generator with the time.
 	srand(time(0));
 	//Set x and y values in the grid.
 	grid[0] = rand() % 199 + 2;
 	grid[1] = rand() % 44 + 2;
-	return grid;
+	this_thread::sleep_for(chrono::seconds(1));
 }
 
 /*
@@ -121,7 +121,9 @@ void getDimensions(int &size,int &generations)
 	int grid1[2] = {};
 	int grid2[2] = {};
 	int grid3[2] = {};
-	//grid1 = randomGridSize();
+	randomGridSize(grid1);
+	randomGridSize(grid2);
+	randomGridSize(grid3);
 
 	//Will allow user to select a grid size.
 	int choice;
@@ -129,9 +131,9 @@ void getDimensions(int &size,int &generations)
 	cout << "1) 8x8" << endl;
 	cout << "2) 9x9" << endl;
 	cout << "3) 10x10" << endl;
-	//cout << "4) " << grid1[0] << "x" << grid1[1] << endl;
-	//cout << "5) " << grid2[0] << "x" << grid2[1] << endl;
-	//cout << "6) " << grid3[0] << "x" << grid3[1] << endl;
+	cout << "4) " << grid1[0] << "x" << grid1[1] << endl;
+	cout << "5) " << grid2[0] << "x" << grid2[1] << endl;
+	cout << "6) " << grid3[0] << "x" << grid3[1] << endl;
 	cout << "7) Custom grid size" << endl;
 	cin >> choice;
 	
@@ -157,6 +159,18 @@ void getDimensions(int &size,int &generations)
 			generations = 10;
 		break;
 		case 4:
+			size = grid1[0];
+			generations = grid1[1];
+		break;
+		case 5:
+			size = grid2[0];
+			generations = grid2[1];
+		break;
+		case 6:
+			size = grid3[0];
+			generations = grid3[1];
+		break;
+		case 7:
 			// ask for user input
 			cout << "Please enter the size of the generations: " << endl;
 			cin >> size;
