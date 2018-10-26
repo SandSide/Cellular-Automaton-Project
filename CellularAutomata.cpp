@@ -102,12 +102,9 @@ Returns an array with the x and y size of the grid.
 */
 void randomGridSize(int grid[2])
 {
-	//Seeds the random value generator with the time.
-	srand(time(0));
 	//Set x and y values in the grid.
 	grid[0] = rand() % 199 + 2;
 	grid[1] = rand() % 44 + 2;
-	this_thread::sleep_for(chrono::seconds(1));
 }
 
 /*
@@ -121,6 +118,8 @@ void getDimensions(int &size,int &generations)
 	int grid1[2] = {};
 	int grid2[2] = {};
 	int grid3[2] = {};
+	//Seeds the random value generator with the time to ensure the same values aren't generated within the same second.
+	srand(time(0));
 	randomGridSize(grid1);
 	randomGridSize(grid2);
 	randomGridSize(grid3);
