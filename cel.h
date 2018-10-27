@@ -8,6 +8,7 @@
 #include <cmath>
 #include <cstdlib>
 #include <cstring>
+#include <fstream>
 
 using namespace std;
 
@@ -21,6 +22,7 @@ using std::chrono::system_clock;
 
 // defining all functions in the program
 void menu();
+int SubMenu();
 void generateCellularAutomata();
 void getDimensions(int &size, int &generations);
 void initGenerations(int array[], int size);
@@ -31,5 +33,6 @@ void displayGeneration(int generation[], int size);
 void binary2Number(int binaryN[8]);
 void computeGameOfLife();
 void generateGameOfLife();
+void print(int array[], int size);
 
 #endif
