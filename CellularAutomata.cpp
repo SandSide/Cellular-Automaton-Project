@@ -92,6 +92,52 @@ void menu()
 
 }
 
+/*
+Sub menu method
+*/
+int SubMenu()
+{
+	//Initilise Varaiables
+	bool isValid=false;
+	int userOption;
+	
+	//Keep asking the user to enter a value until a valid number is entered
+	while(isValid==false)
+	{
+		//Display Menu
+		cout << "What values would you like to use:	" <<endl;
+		cout << "1.	Pre Defined Values" << endl;
+		cout << "2.	Use Customm Values" << endl;
+
+
+		// Get the input from the user and check if the input is valid
+		// Refrence from:https://study.com/academy/lesson/validating-input-data-in-c-plu-plus-programming.html
+		// Under the "cin Functions" Sections
+		while(!(cin >> userOption))
+		{
+
+			// Send an error message
+			cerr << "Error: A non whole number was entered \nPlease enter a whole number:" << endl;
+			cin.clear();
+			cin.ignore(100, '\n');
+
+		}
+
+		//Add the while loop here
+		if(userOption ==1 || userOption ==2)
+		{
+			isValid=true;
+		}else{
+		// Send Error message
+		cout << "Error: Your entered something that was not one of the inputs!" << endl; 
+		cout << "Enter a number form the options below" << endl;
+		cout << "" << endl;
+		}
+	}
+	return userOption;
+
+}
+
 void selectGen(int firGen[], int size)
 {
 	int choice;
@@ -921,7 +967,29 @@ void generateGameOfLife()
 		
 }
 
+/*
 
+Method to print an array
+
+*/
+void print(int array[], int size, string filename){
+	//Create an object
+	ofstream outputFile;
+
+	//Open the file
+	string file= filename+ ".txt";
+	outputFile.open(file);
+
+	//Print the lines of code onto file
+	for (int i = 0; i < size; ++i)
+	{
+		//Print the line into the file
+		outputFile << array[i] << " " ;
+	}
+
+	//CLose file
+	outputFile.close();
+}
 
 int main()
 {
