@@ -34,5 +34,7 @@ void binary2Number(int binaryN[8]);
 void computeGameOfLife();
 void generateGameOfLife();
 void print(int array[], int size);
+void generateFirstGeneration(int x, int gen[]);
+void userDefFirstGen(int gen[], int size);
 
 #endif

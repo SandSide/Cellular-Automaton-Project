@@ -1,4 +1,3 @@
-#include <iostream>
 #include "cel.h"
 
 //	stores the rule throughout the program.
@@ -93,7 +92,32 @@ void menu()
 
 }
 
+void selectGen(int firGen[], int size)
+{
+	int choice;
+	//Print menu
+	cout << "1) Random" << endl;
+	cout << "2) Mid" << endl;
+	cout << "3) Custom" << endl;
+	cin >> choice;
 
+	//Handles user choice.
+	switch(choice)
+	{
+		case 1:
+			//Randomly generates first generation.
+			generateFirstGeneration(size, firGen);
+		break;
+		case 2:
+			//Give first generation 1 (black) in the middle of the array
+			firGen[(size/2)] = 1;
+		break;
+		case 3:
+			//Allows user to pick where 1 values are placed.
+			userDefFirstGen(firGen, size);
+		break;
+	}
+}
 
 
 /*
@@ -116,6 +140,8 @@ void generateCellularAutomata()
 
 	// Will recieve the rule the user wants to execute the automata with.
 	getRuleInput();
+
+	selectGen(array2, size);
 
 	// Calls computeGenerations
 	computeGenerations(array1, array2, amount, size);
@@ -287,9 +313,45 @@ int randomRule()
 	return rule;
 }
 
-void binaryToInt()
+/*
+Will take the binary value as a string and convert it to decimal.
+*/
+int userBinaryRule()
 {
-	
+	//Variables are initialised to store the binary, decimal, and loop exit.
+	char binVal[8];
+	int val = 0;
+	bool calculated = false;
+	while(!calculated)
+	{
+		val = 0;
+		cout << "Enter binary value" << endl;
+		scanf("%8c",binVal);
+
+		for (int i = 0; i < 8; ++i)
+		{
+			if (binVal[i] != '1' && binVal[i] != '0')
+			{
+				i = 8;
+				calculated = false;
+				cout << "Value not a binary number. Try again." << endl;
+			}
+			else
+			{
+				calculated = true;
+			}
+			
+			if (calculated)
+			{
+				if (binVal[i] == '1')
+				{
+					val += pow(2,7-i);
+				}
+			}
+			
+		}
+	}
+	return val;
 }
 
 /*
@@ -365,12 +427,52 @@ void getRuleInput()
 			cout << endl;
 		break;
 		case 9:
-			cout << "Type a binary number" << endl;
+			//Will 
+			ruleN = userBinaryRule();
 		break;
 	}
 
 	// calculate the binary number of the integer
 	calculateBinary(rule, ruleN);
+}
+
+/*
+Will allow the user to choose the values that will constitute the first generation.
+*/
+void userDefFirstGen(int gen[], int size)
+{
+	cout << "The first generation has " << size << " elements in it." << endl;
+	cout << "Enter the number of 1s/Black values you want." << endl;
+	int rep;
+	int sel;
+	cin >> rep;
+	for (int i = 0; i < rep; ++i)
+	{
+		bool notWithinRange = true;
+		do
+		{
+			cout << "Enter a number for the position where you would like to make 1." << endl;
+			cin >> sel;
+			if (sel > size)
+			{
+				cout << "Value out of range. Enter a value below " << size << "." << endl;
+				notWithinRange = false;
+			}
+			else
+			{
+				notWithinRange = true;
+				if (gen[sel-1] == 1)
+				{
+					cout << "Value is already set to 1." << endl;
+					i--;
+				}
+				else
+				{
+					gen[sel-1] = 1;
+				}
+			}
+		}while(!notWithinRange);
+	}
 }
 
 //Will calculate the binary value of a decimal number. Will fill an array with the values representing the binary value of the input decimal number.
@@ -407,9 +509,6 @@ void computeGenerations(int nextGeneration[], int previousGeneration[], int nGen
 	int prevBox = 0; // represents 4 bit valuecomputeGen
 	int currBox = 0; // represents 2 bit value
 	int nextBox = 0; // represents 1 bit value
-
-	// give first generation 1 (black) in the middle of the array
-	previousGeneration[(sizeGeneration/2)] = 1;
 
 	cout << "-------------------------------" << endl;
 	cout<< "GENERATING CELLULLAR AUTOMATA." << endl; 
@@ -549,7 +648,6 @@ void generateFirstGeneration(int x, int gen[])
 		Creates computeGameOfLife Cellular Automata.
 
 */
-	
 void generateGameOfLife()
 {
 
