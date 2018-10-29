@@ -1,81 +1,204 @@
-#include <iostream>
-#include <string>
-#include <random>
-#include <cmath>
-#include <cstdlib>
+#include "cel.h"
 
-using namespace std;
-
-// Daniel Langr https://stackoverflow.com/questions/2616906/how-do-i-output-coloured-text-to-a-linux-terminal
-const std::string red("\033[1;31m");	// Makes output red coloured.
-const std::string reset("\033[0m");		// Makes output black coloured.
-
-
-// defining all functions in the program
-void menu();
-int generateCellularAutomata();
-int getDimensions(int &size, int &generations);
-int initGenerations(int array[], int size);
-int getRule(int rule[8]);
-int calculateBinary(int rule[8],int val);
-int computeGenerations(int nextGeneration[], int previousGeneration[], int rule[], int nGenerations, int sizeGeneration);
-int displayGeneration(int generation[], int size);
-int binary2Number(int binaryN[8]);
+//	stores the rule throughout the program.
+int rule[8] = {};
 
 
 /*
 	Menu method
+
 */
 void menu()
 {
 
+	system("clear");
+
+	// seeds the random value generator for all random value generation.
+	srand(time(0));
+	
+	int userOption = 50;
+
+	while(userOption != 0)
+	{
+
+		// Display the options to the user
+		cout << "\n-------------------------------" << endl;
+		cout << "\t MAIN MENU" << endl;
+		cout << "-------------------------------" << endl;
+		cout << "1.	Cellular Automata." << endl;
+		cout << "2.	Game of Life." << endl;
+		cout << "0.	Exit." << endl;
+		cout << "-------------------------------" << endl;
+		cout << "Please enter you choice: " << endl;
+
+		cin >> userOption;
+
+		cout << "-------------------------------" << endl;
+
+		// While the input is invalid
+		while(!cin || userOption < 0 || userOption >2)
+		{
+
+			// Clear the terminal
+			system("clear");
+
+			cin.clear();
+			cin.ignore();
+
+			// Send Error message
+			cout << "\nError: Your entered something that was not one of the inputs!" << endl; 
+			cout << "Enter a number from the options below." << endl;
+
+			// Display the options to the user
+			cout << "\n-------------------------------" << endl;
+			cout << "\t MAIN MENU" << endl;
+			cout << "-------------------------------" << endl;
+			cout << "1.	Cellular Automata." << endl;
+			cout << "2.	Game of Life." << endl;
+			cout << "0.	Exit." << endl;
+			cout << "-------------------------------" << endl;
+			cout << "Please enter you choice: " << endl;
+
+			cin >> userOption;
+			
+			cout << "-------------------------------" << endl;
+
+		}
+
+		// Process the users option
+		if(userOption == 1)
+		{
+
+			// Run the Processs
+			generateCellularAutomata();
+
+
+		}
+		else if (userOption == 2)
+		{
+			
+			generateGameOfLife();
+
+		}
+		else if (userOption == 0)
+		{
+			
+			cout << "Exiting program." << endl;
+			exit(0);
+
+		}
+
+	}
+
+}
+
+/*
+Sub menu method
+*/
+int SubMenu()
+{
+	//Initilise Varaiables
+	bool isValid=false;
 	int userOption;
-
-	// Display the options to the user
-	cout << "1.	Generate Manual Automata" << endl;
-	cout << "2.	Generate Pre-Dedined Automata" << endl; 
-	cout << "3.	Generate Random Automata" << endl; 
-	cout << "4.	Generate Game of Life" << endl;  
-	cout << "0.	Exit" << endl; 
-
-	// Get the input from the user and check if the input is valid
-	// Refrence from:https://study.com/academy/lesson/validating-input-data-in-c-plu-plus-programming.html
-	// Under the "cin Functions" Sections
-	while(!(cin >> userOption))
+	
+	//Keep asking the user to enter a value until a valid number is entered
+	while(isValid==false)
 	{
+		//Display Menu
+		cout << "What values would you like to use:	" <<endl;
+		cout << "1.	Pre Defined Values" << endl;
+		cout << "2.	Use Customm Values" << endl;
 
-		// Send an error message
-		cerr << "Error: A non whole number was entered \nPlease enter a whole number:" << endl;
-		cin.clear();
-		cin.ignore(100, '\n');
 
-	}
+		// Get the input from the user and check if the input is valid
+		// Refrence from:https://study.com/academy/lesson/validating-input-data-in-c-plu-plus-programming.html
+		// Under the "cin Functions" Sections
+		while(!(cin >> userOption))
+		{
 
-	// Process the users option
-	if(userOption == 1)
-	{
-		//Run Generate Manual Automata
-		generateCellularAutomata();
-	}else if(userOption ==2){
-		//Run Generate Pre-Dedined Automata
-	}else if(userOption ==3){
-		//Run Pre-Dedined Automata
-	}else if(userOption ==4){
-		//Run Game of Life
-	}
-	else if (userOption ==0)
-	{
-		exit(0);
-	}
-	else
-	{
+			// Send an error message
+			cerr << "Error: A non whole number was entered \nPlease enter a whole number:" << endl;
+			cin.clear();
+			cin.ignore(100, '\n');
+
+		}
+
+		//Add the while loop here
+		if(userOption ==1 || userOption ==2)
+		{
+			isValid=true;
+		}else{
 		// Send Error message
 		cout << "Error: Your entered something that was not one of the inputs!" << endl; 
 		cout << "Enter a number form the options below" << endl;
 		cout << "" << endl;
-
+		}
 	}
+	return userOption;
 
+}
+
+void selectGen(int firGen[], int size)
+{
+	int choice;
+	//Print menu
+	cout << "1) Random" << endl;
+	cout << "2) Mid" << endl;
+	cout << "3) Custom" << endl;
+	cin >> choice;
+
+	//Handles user choice.
+	switch(choice)
+	{
+		case 1:
+			//Randomly generates first generation.
+			generateFirstGeneration(size, firGen);
+		break;
+		case 2:
+			//Give first generation 1 (black) in the middle of the array
+			firGen[(size/2)] = 1;
+		break;
+		case 3:
+			//Allows user to pick where 1 values are placed.
+			userDefFirstGen(firGen, size);
+		break;
+	}
+}
+
+string getFilename(){
+	string filename;
+
+
+	cout << ""<<endl;
+	cout <<"Enter a filename" <<endl;
+	cout << ""<<endl;
+
+	cin >>filename;
+
+	//Check if anything was entered
+	// While the input is invalid
+		while(!cin)
+		{
+
+			// Clear the terminal
+			system("clear");
+
+			cin.clear();
+			cin.ignore();
+
+			// Send Error message
+			cout << "\nError: You did not enter anything or a valid filename, try again" << endl; 
+			cout << "" << endl;
+
+			cout << ""<<endl;
+			cout <<"Enter a filename" <<endl;
+			cout <<"" <<endl;
+
+			cin >>filename;
+		}
+
+
+	return filename;
 }
 
 /*
@@ -83,143 +206,233 @@ void menu()
 	Collects all data needed to run ComputeGenerations, which will create a Cellular Automata.
 
 */
-int generateCellularAutomata()
+void generateCellularAutomata()
 {
-
-	// make local varibles
-	int size;
+	// Make local varibles
+ 	int size;
 	int amount;
 
-	// getRule does not work so had to use this to make the program work
-	int rule[8] = {0,0,0,1,1,1,1,0};
+	// Get size and nuber of generations
+ 	getDimensions(size,amount);
 
-	// get size and uber of generations
-	getDimensions(size, amount);
+	// Creates and initialises previous and next generation arrays.
+	int *array1 = new int[size];
+	int *array2 = new int[size];
 
-	// takes 1 away from ammount (to compensate for first generation)
-	amount--;
+	// Will recieve the rule the user wants to execute the automata with.
+	getRuleInput();
 
-	// creates previous and next generation arrays
-	int array1[size];
-	int array2[size];
+	selectGen(array2, size);
 
-	// initalises the arrays
-	initGenerations(array1, size);
-	initGenerations(array2, size);
-
-	//getRule(rule);
-
-	// calls computeGenerations
-	computeGenerations(array1, array2, rule, amount, size);
-
+	// Calls computeGenerations
+	computeGenerations(array1, array2, amount, size);
 }
 
-int SubMenu(){
-	//Initilise Varaiables
-	bool isValid=false;
-	int userOption;
-	
-	//Keep asking the user to enter a value until a valid number is entered
-	while(isValid==false){
-	//Display Menu
-	cout << "What values would you like to use:	" <<endl;
-	cout << "1.	Pre Defined Values" << endl;
-	cout << "2.	Use Customm Values" << endl;
+/*
+	Will randomly select values to use for the grid size.
+	@param grid This is the input grid
 
-
-// Get the input from the user and check if the input is valid
-	// Refrence from:https://study.com/academy/lesson/validating-input-data-in-c-plu-plus-programming.html
-	// Under the "cin Functions" Sections
-	while(!(cin >> userOption))
-	{
-
-		// Send an error message
-		cerr << "Error: A non whole number was entered \nPlease enter a whole number:" << endl;
-		cin.clear();
-		cin.ignore(100, '\n');
-
-	}
-
-	//Add the while loop here
-	if(userOption ==1 || userOption ==2)
-	{
-		isValid=true;
-	}else{
-		// Send Error message
-		cout << "Error: Your entered something that was not one of the inputs!" << endl; 
-		cout << "Enter a number form the options below" << endl;
-		cout << "" << endl;
-	}
+*/
+void randomGridSize(int grid[2])
+{
+	//Set x and y values in the grid.
+	grid[0] = rand() % 199 + 2;
+	grid[1] = rand() % 44 + 2;
 }
-	return userOption;
-
-}
-
-
 
 /*
 	Recieves user input to determine size and number of generations.
-
 	Parameter: &size; Refrence to store user input.
 	Parameter: &generations. Refrence to store user input.
-	
 */
-int getDimensions(int &size,int &generations)
+void getDimensions(int &size,int &generations)
 {
+	//Gets random grid sizes to allow user to select.
+	int grid1[2] = {};
+	int grid2[2] = {};
+	int grid3[2] = {};
+	randomGridSize(grid1);
+	randomGridSize(grid2);
+	randomGridSize(grid3);
 
-	// ask for user input
-	cout << "Please enter the size of the generations: " << endl;
-	cin >> size;
+	//Will allow user to select a grid size.
+	int choice;
 
-	// while the size entered for the array is less than 2
-	while(size < 2)
+	system("clear");
+
+	cout << "\n-------------------------------" << endl; 
+	cout << "   Select Automata Dimensions." << endl;
+	cout << "-------------------------------" << endl;
+	cout << "Static:" << endl;
+	cout << "	1) 8x8" << endl;
+	cout << "	2) 9x9" << endl;
+	cout << "	3) 10x10" << endl;
+	cout << "Random:" << endl;
+	cout << "	4) " << grid1[0] << "x" << grid1[1] << endl;
+	cout << "	5) " << grid2[0] << "x" << grid2[1] << endl;
+	cout << "	6) " << grid3[0] << "x" << grid3[1] << endl;
+	cout << "Manual" << endl;
+	cout << "\t7) Custom Dimensions." << endl;
+
+	cout << "-------------------------------" << endl;
+	cout << "Please enter your choice:" << endl;
+	cin >> choice;
+	cout << "-------------------------------" << endl;
+	
+	while(!cin || choice <1 || choice > 7)
 	{
 
-		// ask user to enter a number
-		cout << "The size you entered is too small. Please enter a size greater than 1." << endl;
-		cout << "Please enter the size of the generations: " << endl;
-		cin >> size;
+		system("clear");
+		cin.clear();
+		cin.ignore(); // skips stream data
+
+		cout << "\nInvalid Input." << endl;
+		cout << "\n-------------------------------" << endl; 
+		cout << "   Select Automata Dimensions." << endl;
+		cout << "-------------------------------" << endl;
+		cout << "Static:" << endl;
+		cout << "	1) 8x8" << endl;
+		cout << "	2) 9x9" << endl;
+		cout << "	3) 10x10" << endl;
+		cout << "Random:" << endl;
+		cout << "	4) " << grid1[0] << "x" << grid1[1] << endl;
+		cout << "	5) " << grid2[0] << "x" << grid2[1] << endl;
+		cout << "	6) " << grid3[0] << "x" << grid3[1] << endl;
+		cout << "Manual" << endl;
+		cout << "\t7) Custom Dimensions." << endl;
+
+		cout << "-------------------------------" << endl;
+		cout << "Please enter your choice:" << endl;
+		cin >> choice;
+		cout << "-------------------------------" << endl;
 
 	}
-
-	cout << endl;
-
-	// ask for user input
-	cout << "Please enter the number of generations you want to create: " << endl;
-	cin >> generations;
-
-	// while the number entered for number of generations is less than 1
-	while(generations < 1)
+	
+	switch(choice)
 	{
+		case 1: 
+			size = 8;
+			generations = 8;
+		break;
 
-		// ask user to enter a number
-		cout << "The number you entered is too small. Please enter a size greater than 0." << endl;
-		cout << "Please enter the size of the generations: " << endl;
-		cin >> generations;
+		case 2: 
+			size = 9;
+			generations = 9;
+		break;
+
+		case 3: 
+			size = 10;
+			generations = 10;
+		break;
+
+		case 4:
+			size = grid1[0];
+			generations = grid1[1];
+		break;
+
+		case 5:
+			size = grid2[0];
+			generations = grid2[1];
+		break;
+
+		case 6:
+			size = grid3[0];
+			generations = grid3[1];
+		break;
+
+		case 7:
+
+			// ask for user input for size
+			cout << "\nPlease enter the size of the generations: " << endl;
+			cin >> size;
+
+
+			// while the size entered for the array is less than 2 or entered bad varaible type
+			while(size < 2 || !cin || size >200)
+			{
+
+				cin.clear();
+				cin.ignore(); // skips stream data
+
+
+				// ask user to  re-enter the size
+				cout << "\nThe size you entered is invalid. Please enter a number between 2 and 200." << endl;
+				cout << "Please enter the size of the generations: " << endl;
+				cin >> size;
+
+			}
+
+
+			// ask for user input foe number of generations
+			cout << "\nPlease enter the number of generations you want to create: " << endl;
+			cin >> generations;
+
+			// while the number entered for number of generations is less than 1 or entered bad varaible type
+			while(generations < 2 || !cin)
+			{
+
+				cin.clear();
+				cin.ignore(); // skips stream data
+
+				// ask user to re-enter the size of generations
+				cout << "\nThe number you entered is invalid. Please enter a size greater than 1." << endl;
+				cout << "Please enter the size of the generations: " << endl;
+				cin >> generations;
+
+			}
+		break;
 
 	}
 
 }
 
+//	Will select a random decimal number to use as the rule.
+//	@return rule The decimal value of the rule.
+int randomRule()
+{
+	int rule = rand() % 256;
+	return rule;
+}
 
 /*
-	Initalises the whole array to be 0.
-
-	Parameter: array[]. Generation which will be initalised with 0s.
-	Parameter: size. Size of the generation.
-
+Will take the binary value as a string and convert it to decimal.
 */
-int initGenerations(int array[], int size)
+int userBinaryRule()
 {
-
-	// for every item in the generation, make it 0
-	for(int i = 0; i <size ; i++)
+	//Variables are initialised to store the binary, decimal, and loop exit.
+	char binVal[8];
+	int val = 0;
+	bool calculated = false;
+	while(!calculated)
 	{
+		val = 0;
+		cout << "Enter binary value" << endl;
+		scanf("%8c",binVal);
 
-		array[i] = 0;
-
+		for (int i = 0; i < 8; ++i)
+		{
+			if (binVal[i] != '1' && binVal[i] != '0')
+			{
+				i = 8;
+				calculated = false;
+				cout << "Value not a binary number. Try again." << endl;
+			}
+			else
+			{
+				calculated = true;
+			}
+			
+			if (calculated)
+			{
+				if (binVal[i] == '1')
+				{
+					val += pow(2,7-i);
+				}
+			}
+			
+		}
 	}
-
+	return val;
 }
 
 /*
@@ -230,50 +443,131 @@ int initGenerations(int array[], int size)
 
 
 */
-int getRule(int rule[8])
+void getRuleInput()
 {
+	int choice;
+	// 
+	int rule0 = randomRule(), rule1 = randomRule(), rule2 = randomRule();
+	cout << "Select a rule to use." << endl;
+	cout << "1) Rule 30" << endl;
+	cout << "2) Rule 255" << endl; 
+	cout << "3) Rule 0" << endl;
+	cout << "4) Rule 45" << endl;
+	cout << "5) Rule " << rule0 << endl;
+	cout << "6) Rule " << rule1 << endl;
+	cout << "7) Rule " << rule2 << endl;
+	cout << "8) Custom Rule" << endl;
+	cout << "9) Input Rule as Binary value" << endl;
+
+	cin >> choice; 
 
 	// store integer
 	int ruleN;
 
-	// ask for user input
-	cout << "\n Please enter the rule: " << endl;
-	cin >> ruleN;
-
-	// while the rule enetred is not between 0 and 255
-	while(ruleN < 0 || ruleN >255)
+	switch(choice)
 	{
+		case 1:
+			ruleN = 30;
+		break;
+		case 2:
+			ruleN = 255;
+		break;
+		case 3:
+			ruleN = 0;
+		break;
+		case 4:
+			ruleN = 45;
+		break;
+		case 5:
+			ruleN = rule0;
+		break;
+		case 6:
+			ruleN = rule1;
+		break;
+		case 7:
+			ruleN = rule2;
+		break;
+		case 8:
+			cout << "\nPlease enter the rule: " << endl;
+			cin >> ruleN;
 
-		// ask user to enter a number
-		cout << "The rule you entered is invalid. Please enter a vlue between 0-255." << endl;
-		cout << "Please enter the rule: " << endl;
-		cin >> ruleN;
+			// while the rule enetred is not between 0 and 255
+			while(ruleN < 0 || ruleN >255 || !cin)
+			{
 
+				cin.clear();
+				cin.ignore(); // skips stream data
+
+				// ask user to enter a number
+				cout << "\nThe rule you entered is invalid. Please enter a vlue between 0-255." << endl;
+				cout << "Please enter the rule: " << endl;
+				cin >> ruleN;
+
+			}
+
+			cout << endl;
+		break;
+		case 9:
+			//Will 
+			ruleN = userBinaryRule();
+		break;
 	}
-
-	cout << endl;
 
 	// calculate the binary number of the integer
 	calculateBinary(rule, ruleN);
-
 }
 
-
-//Will calculate the binary value of a decimal number. Returns the binary value as an array.
-//val is the number being converted.
-int calculateBinary(int rule[8],int val)
+/*
+Will allow the user to choose the values that will constitute the first generation.
+*/
+void userDefFirstGen(int gen[], int size)
 {
+	cout << "The first generation has " << size << " elements in it." << endl;
+	cout << "Enter the number of 1s/Black values you want." << endl;
+	int rep;
+	int sel;
+	cin >> rep;
+	for (int i = 0; i < rep; ++i)
+	{
+		bool notWithinRange = true;
+		do
+		{
+			cout << "Enter a number for the position where you would like to make 1." << endl;
+			cin >> sel;
+			if (sel > size)
+			{
+				cout << "Value out of range. Enter a value below " << size << "." << endl;
+				notWithinRange = false;
+			}
+			else
+			{
+				notWithinRange = true;
+				if (gen[sel-1] == 1)
+				{
+					cout << "Value is already set to 1." << endl;
+					i--;
+				}
+				else
+				{
+					gen[sel-1] = 1;
+				}
+			}
+		}while(!notWithinRange);
+	}
+}
 
-	int count = 8;
-	
+//Will calculate the binary value of a decimal number. Will fill an array with the values representing the binary value of the input decimal number.
+//val is the number being converted.
+void calculateBinary(int arr[8],int val)
+{
 	//Loops until the values in the result value are computed.
-	for (int i = 0; i < count; ++i)
+	for (int i = 0; i < 8; ++i)
 	{
 		//If the value is greater equal to the current exponent of 2
 		if (val >= pow(2,(7-i)))
 		{
 			//Set spot in array to 1 and subtract the exponent of 2 from the value.
-			rule[i] = 1;
+			arr[i] = 1;
 			val -= pow(2,(7-i));
 		}
 	}
@@ -289,23 +583,34 @@ int calculateBinary(int rule[8],int val)
 	Parameter: sizeGeneration. Number which specifies the size of each generation.
 
 */
-int computeGenerations(int nextGeneration[], int previousGeneration[], int rule[], int nGenerations, int sizeGeneration)
+void computeGenerations(int nextGeneration[], int previousGeneration[], int nGenerations, int sizeGeneration)
 {
-
 	// varaible will store an int which is the total of next 3 varaibles.
 	int boxPattern = 0;
-	int prevBox = 0; // represents 4 bit value
+	int prevBox = 0; // represents 4 bit valuecomputeGen
 	int currBox = 0; // represents 2 bit value
 	int nextBox = 0; // represents 1 bit value
 
-	// give first generation 1 (black) in the middle of the array
-	previousGeneration[(sizeGeneration/2)] = 1;
+	string filename= getFilename();
+	fstream f("filename.txt" , f.out | f.app);
+	if (!f)
+    {
+        cout << "Error Opening File" << endl;
+        return -1;
+    }
 
 
-	cout<< "GENERATING CELLULLAR AUTOMATA.\n" << endl; 
+
+	cout << "-------------------------------" << endl;
+	cout<< "GENERATING CELLULLAR AUTOMATA." << endl; 
+	cout << "-------------------------------\n" << endl;
 
 	// displays previous generation (first generation)
 	displayGeneration(previousGeneration, sizeGeneration);
+	//PrintGenerationToFile(previousGeneration);	
+	fwrite << previousGeneration;
+
+
 
 	// creates nGenerations generations
 	for (int g = 1; g < nGenerations; g++)
@@ -327,7 +632,7 @@ int computeGenerations(int nextGeneration[], int previousGeneration[], int rule[
 
 			}
 			// if you are finding the result for last box (column)
-			else if (i == sizeGeneration)
+			else if (i == (sizeGeneration-1))
 			{
 
 				// checking previous row to find out what will happen to the last box (column) in the next generation
@@ -368,6 +673,9 @@ int computeGenerations(int nextGeneration[], int previousGeneration[], int rule[
 
 		// displays generated generation (nextGeneration)
 		displayGeneration(nextGeneration,sizeGeneration);
+		fwrite<< previousGeneration;
+
+
 
 		// display next Generation
 		for (int k =0; k<sizeGeneration; k++)
@@ -381,7 +689,10 @@ int computeGenerations(int nextGeneration[], int previousGeneration[], int rule[
 
 	}	
 
+	//Will clear rule array making it store 0.
+	memset(rule,0,7);
 }
+
 
 /*
 	
@@ -391,7 +702,7 @@ int computeGenerations(int nextGeneration[], int previousGeneration[], int rule[
 	Parameter: size. Contains size of generation.
 
 */
-int displayGeneration(int generation[], int size)
+void displayGeneration(int generation[], int size)
 {
 
 	// displays the generation
@@ -418,64 +729,330 @@ int displayGeneration(int generation[], int size)
 }
 
 
-int main(){
- menu();
+
+//	Will randomly generate the first generation.
+//	@param x The size of the generation.
+//	@param gen[] This is the array random values are being assigned to.
+void generateFirstGeneration(int x, int gen[])
+{
+	//Will loop for the entire row.
+	for (int i = 0; i < x; ++i)
+	{
+		//Will pick 1 or 0.
+		gen[i] = rand() % 2;
+	}
 }
 
 
 /*
-
-int binary2Number(int binaryN[8])
-{
-
-	// calculates binary number integer value
-	int number = (128*binaryN[0]) + (64*binaryN[1]) + (32*binaryN[2]) + (16*binaryN[3]) + (8*binaryN[4]) + (4*binaryN[5]) + (2*binaryN[6]) + (1*binaryN[7]);
-
-	// displays Binary number
-	cout << "Binary: ";
-
-	for (int i = 0; i <8; i++)
-	{
-
-		cout << binaryN[i];
-
-	}
-
-	// diplays intger value
-	cout << " | Integer: " << number << endl; 
-
-
-}
-
-
-int char2Binary(char c)
-{
-
-
-	int number = static_cast<int>(c);
-
-	cout << "Character: " << c << " | Number: " << number << endl;
-
-
-}
-
-
-int getValidIntFromUser(){
-	//Initliasie Vraibles
-	int userInput;
-
-	//Get the input from the user and check if the input is valid
-	//Refrence from:https://study.com/academy/lesson/validating-input-data-in-c-plu-plus-programming.html
-		//Under the "cin Functions" Sections
-	while(!(cin >> userInput)){
-		//Send an error message
-		cerr << "Error: A non whole number was entered \nPlease enter a whole number:" << endl;
-		cin.clear();
-		cin.ignore(100, '\n');
-	}
-	
-
-	return userInput;
-}
+		Creates computeGameOfLife Cellular Automata.
 
 */
+void generateGameOfLife()
+{
+
+	// counts how mnay alive neighbours around the block
+	int aliveNeb = 0;
+
+	// definining the size of the array
+	const int size = 40;
+	const int sizeX = size;
+	const int sizeY = size;
+
+	int previousGeneration[sizeY][sizeX];
+	int nextGeneration[sizeY][sizeX];
+
+	// initalising the generations
+	for (int j = 0; j <sizeY; j++)
+	{
+		// for every item in the generation, make it 0
+		for(int i = 0; i <sizeX ; i++)
+		{
+
+			previousGeneration[j][i] = 0;
+			nextGeneration[j][i] = 0;
+
+		}
+	}
+
+	// clearing the terminal
+	system("clear");
+	system("clear");
+
+	// make some blocks black
+	for(int i = 10; i < 20; i++)
+	{
+
+		for(int j = 10; j <20; j++)
+		{	
+
+			previousGeneration[i][j] = 1;
+
+		}
+
+	}
+
+	// display first generation
+	for (int i = 0; i < sizeY; i++)
+	{
+
+		for(int j = 0; j <sizeX ; j++)
+		{
+
+			// if block is 1, display black
+			if (previousGeneration[i][j] == 1)
+			{
+
+				cout << "\u25A1" << 0; //previousGeneration[i][j];
+
+			}
+			else
+			{
+
+				// display white
+				cout << "\u25A0" << 0; //previousGeneration[i][j];
+
+			}
+
+		}
+
+		cout << reset << endl;
+
+	}
+
+	// do 100 times
+	for(int m = 0; m <100; m++)
+	{
+
+		// display name
+		cout << "\n\t\t\t\t  GAME OF LIFE" << endl;
+
+		// for every item in the 2-D array
+		for(int i = 0; i < sizeY ; i++)
+		{
+
+			for(int j = 0; j <sizeX ; j++)
+			{
+
+				// if at right-top corner
+				if(i == 0 && j == 0)
+				{
+
+					aliveNeb = 0;
+					aliveNeb += (previousGeneration[sizeY-1][sizeX-1] + previousGeneration[sizeY-1][j] + previousGeneration[sizeY-1][j+1]);
+					aliveNeb += (previousGeneration[i][sizeX-1] + previousGeneration[i][j+1]);
+					aliveNeb += (previousGeneration[i+1][sizeX-1] + previousGeneration[i+1][j] + previousGeneration[i+1][j+1]);
+
+				}
+
+				// if at right-bottom corner
+				else if (i == (sizeY-1) && j == 0)
+				{
+
+					aliveNeb = 0;
+					aliveNeb += (previousGeneration[i+1][sizeX-1] + previousGeneration[i+1][j] + previousGeneration[i+1][j+1]);
+					aliveNeb += (previousGeneration[i][sizeX-1] + previousGeneration[i][j+1]);
+					aliveNeb += (previousGeneration[0][sizeX-1] + previousGeneration[0][j] + previousGeneration[0][j+1]);
+
+				}
+
+				// if at left-top corner
+				else if (i == 0 && j == (sizeX - 1))
+				{
+
+					aliveNeb = 0;
+					aliveNeb += (previousGeneration[sizeY-1][j-1] + previousGeneration[sizeY-1][j] + previousGeneration[sizeY-1][0]);
+					aliveNeb += (previousGeneration[i][j-1] + previousGeneration[i][0]);
+					aliveNeb += (previousGeneration[i+1][j-1] + previousGeneration[i+1][j] + previousGeneration[i+1][0]);
+
+				}
+
+				// if at left-bottom corner
+				else if (i == (sizeY-1) && j == (sizeX - 1))
+				{
+
+					aliveNeb = 0;
+					aliveNeb += (previousGeneration[i-1][j-1] + previousGeneration[i-1][j] + previousGeneration[i-1][0]);
+					aliveNeb += (previousGeneration[i][j-1] + previousGeneration[i][0]);
+					aliveNeb += (previousGeneration[0][j-1] + previousGeneration[0][j] + previousGeneration[0][0]);
+
+				}
+
+				// if at left border
+				else if(i == 0)
+				{
+
+					aliveNeb = 0;
+					aliveNeb += (previousGeneration[sizeY-1][j-1] + previousGeneration[sizeY-1][j] + previousGeneration[sizeY-1][j+1]);
+					aliveNeb += (previousGeneration[i][j-1] + previousGeneration[i][j+1]);
+					aliveNeb += (previousGeneration[i+1][j+1] + previousGeneration[i+1][j] + previousGeneration[i+1][j+1]);
+
+
+				}
+
+				// if at right border
+				else if(i == sizeY -1)
+				{
+
+					aliveNeb = 0;
+					aliveNeb += (previousGeneration[i-1][j-1] + previousGeneration[i-1][j] + previousGeneration[i-1][j+1]);
+					aliveNeb += (previousGeneration[i][j-1] + previousGeneration[i][j+1]);
+					aliveNeb += (previousGeneration[0][j+1] + previousGeneration[0][j] + previousGeneration[0][j+1]);
+
+				}
+
+				// if at top border
+				else if(j == 0)
+				{
+
+					aliveNeb = 0;
+					aliveNeb += (previousGeneration[i-1][sizeX-1] + previousGeneration[i-1][j] + previousGeneration[i-1][j+1]);
+					aliveNeb += (previousGeneration[i][sizeX-1] + previousGeneration[i][j+1]);
+					aliveNeb += (previousGeneration[i+1][sizeX-1] + previousGeneration[i+1][j] + previousGeneration[i+1][j+1]);
+
+				}
+
+				// if at bottom border
+				else if(j == sizeX-1)
+				{
+
+					aliveNeb = 0;
+					aliveNeb += (previousGeneration[i-1][j-1] + previousGeneration[i-1][j] + previousGeneration[i-1][0]);
+					aliveNeb += (previousGeneration[i][j-1] + previousGeneration[i][0]);
+					aliveNeb += (previousGeneration[i+1][j-1] + previousGeneration[i+1][j] + previousGeneration[i+1][0]);
+
+				}
+				else
+				{
+
+					aliveNeb = 0;
+					aliveNeb += (previousGeneration[i-1][j-1] + previousGeneration[i-1][j] + previousGeneration[i-1][j+1]);
+					aliveNeb += (previousGeneration[i][j-1] + previousGeneration[i][j+1]);
+					aliveNeb += (previousGeneration[i+1][j-1] + previousGeneration[i+1][j] + previousGeneration[i+1][j+1]);
+
+				}
+
+				// if resident is alive
+				if(previousGeneration[i][j] == 1) 
+				{	
+
+					// if have 2 neighbours
+					if(aliveNeb < 2)
+					{
+
+						// resident dies from loneliness
+						nextGeneration[i][j] = 0;
+
+					}
+
+					// if 2 or 3 neighbours
+					else if(aliveNeb == 3 || aliveNeb == 2)
+					{
+
+						// resident stays alive
+						nextGeneration[i][j] = 1;
+
+					}
+
+					// if more than 3 neighbours
+					else if(aliveNeb > 3 )
+					{
+
+						// resident dies
+						nextGeneration[i][j] = 0;
+
+					}
+
+				}
+				// if no resident
+				else if(previousGeneration[i][j] == 0)
+				{
+
+					// if 3 neighbours 
+					if(aliveNeb == 3)
+					{
+
+						// new resident is born
+						nextGeneration[i][j] = 1;
+
+					}
+
+				}
+
+			}
+
+		}
+
+		// sleep for 1 second
+	    sleep_until(system_clock::now() + 1s);
+	    system("clear");
+	   	system("clear");
+
+	   	// for every item in the aray, display it
+		for (int i = 0; i < sizeY; i++)
+		{
+
+			// for every item in the generation, make it 0
+			for(int j = 0; j <sizeX; j++)
+			{
+
+				if (nextGeneration[i][j] == 1)
+				{
+
+					cout << "\u25A1" << nextGeneration[i][j];
+
+				}
+				else
+				{
+
+					cout << "\u25A0" << nextGeneration[i][j];
+
+				}
+
+				previousGeneration[i][j] = nextGeneration[i][j];
+
+			}
+
+			cout << reset << endl;
+
+		}
+
+	}
+		
+}
+
+
+
+
+
+
+/*
+
+Method to print an array
+
+*/
+void print(int array[], int size, string filename){
+	//Create an object
+	ofstream outputFile;
+
+	//Open the file
+	string file= filename+ ".txt";
+	outputFile.open(file);
+
+	//Print the lines of code onto file
+	for (int i = 0; i < size; ++i)
+	{
+		//Print the line into the file
+		outputFile << array[i] << " " ;
+	}
+
+	//CLose file
+	outputFile.close();
+}
+
+int main()
+{
+	menu();
+	
+}
+
