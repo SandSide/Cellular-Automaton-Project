@@ -2,7 +2,6 @@
 #define __CELLULLARAUTOMATA_H_INCLUDED__
 
 #include <iostream>
-#include <chrono>
 #include <thread>
 #include <random>
 #include <cmath>
@@ -39,5 +38,6 @@ void print(int array[], int size);
 void generateFirstGeneration(int x, int gen[]);
 void userDefFirstGen(int gen[], int size);
 void load();
+void appendmethod(int array[],int size, string filename);
 
 #endif

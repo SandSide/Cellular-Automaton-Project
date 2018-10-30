@@ -631,6 +631,7 @@ void computeGenerations(int nextGeneration[], int previousGeneration[], int nGen
 
 		// displays generated generation (nextGeneration)
 		displayGeneration(nextGeneration,sizeGeneration);
+		appendmethod(nextGeneration,sizeGeneration,"text2");
 
 		// display next Generation
 		for (int k =0; k<sizeGeneration; k++)
@@ -667,13 +668,13 @@ void displayGeneration(int generation[], int size)
 		if (generation[i] == 1)
 		{
 
-			cout << "u25A1" << " ";
+			cout << "\u25A1" << " ";
 
 		}
 		else
 		{
 
-			cout << "u25A0" << generation[i];
+			cout << "\u25A0" << generation[i];
 
 		}
 
@@ -974,34 +975,45 @@ void generateGameOfLife()
 		
 }
 
-/*
+void appendmethod(int array[],int size, string filename)
+{
+	//Create an Object of fstream
+	fstream fs;
 
-Method to print an array
-
-*/
-void print(int array[], int size, string filename){
-	//Create an object
-	ofstream outputFile;
-
-	//Open the file
-	string file= filename+ ".txt";
-	outputFile.open(file);
-
-	//Print the lines of code onto file
-	for (int i = 0; i < size; ++i)
+	//Alter the filename supplied by the user to add a .txt file type
+	string name= filename+".txt";
+	
+	//Open the file to append
+	fs.open(name,fstream::app);
+	
+	//Loop though the full array
+	for (int i = 0; i < size; i++)
 	{
-		//Print the line into the file
-		outputFile << array[i] << " " ;
-	}
 
-	//CLose file
-	outputFile.close();
+		//Append each item of the array into the file
+		fs << array[i];
+
+		if(!(i == size -1))
+		{
+
+			fs << ",";
+
+		}
+	}
+	
+	//add a comma to the end to speprate a line
+	fs << endl;
+	
+	//Close the file
+	fs.close();
+	
 }
 
 void load()
 {
 
 	cout << "\nAvailable files to load: \n" << endl;
+	
 	// Display txt files vetically
 	system("ls | grep .txt | cat");
 
