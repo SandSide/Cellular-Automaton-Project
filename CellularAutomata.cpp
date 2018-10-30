@@ -667,13 +667,13 @@ void displayGeneration(int generation[], int size)
 		if (generation[i] == 1)
 		{
 
-			cout << red << generation[i];
+			cout << "u25A1" << " ";
 
 		}
 		else
 		{
 
-			cout << reset << generation[i];
+			cout << "u25A0" << generation[i];
 
 		}
 
