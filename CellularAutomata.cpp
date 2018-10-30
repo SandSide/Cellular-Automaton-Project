@@ -6,7 +6,6 @@ int rule[8] = {};
 
 /*
 	Menu method
-
 */
 void menu()
 {
@@ -201,10 +200,34 @@ string getFilename(){
 	return filename;
 }
 
+void appendArrayToFile(int array[],int size, string filename){
+	//Create an Object of fstream
+	fstream fs;
+
+	//Alter the filename supplied by the user to add a .txt file type
+	string name= filename+".txt";
+	
+	//Open the file to append
+	fs.open(name,fstream::app);
+	
+	//Loop though the full array
+	for (int i = 0; i < size; ++i){
+		//Append each item of the array into the file
+		fs<< array[i];
+	}
+	
+	//add a comma to the end to speprate a line
+	fs<< ",\n";
+	
+	//Close the file
+	fs.close();
+}
+
+
+
 /*
 	
 	Collects all data needed to run ComputeGenerations, which will create a Cellular Automata.
-
 */
 void generateCellularAutomata()
 {
@@ -231,7 +254,6 @@ void generateCellularAutomata()
 /*
 	Will randomly select values to use for the grid size.
 	@param grid This is the input grid
-
 */
 void randomGridSize(int grid[2])
 {
@@ -438,10 +460,7 @@ int userBinaryRule()
 /*
 	
 	Gets integer user input to convert into binary and store in the parameter varaible.
-
 	Paramter: rule[8]. Array to store the rule.
-
-
 */
 void getRuleInput()
 {
@@ -575,13 +594,11 @@ void calculateBinary(int arr[8],int val)
 
 /*
 	Creates 1-D Cellular Automata which is looped at the sides.
-
 	Parameter: nextGeneration[]. Array which will contain next generation based on previous generation.
 	Parameter: previousGeneration[]. Array which contains first generation. Will store previous generation as a new one is being created.
 	Parameter: rule[]. Contains the rule.
 	Parameter: nGenerations. Number which specifies how many generations will be made.
 	Parameter: sizeGeneration. Number which specifies the size of each generation.
-
 */
 void computeGenerations(int nextGeneration[], int previousGeneration[], int nGenerations, int sizeGeneration)
 {
@@ -592,14 +609,6 @@ void computeGenerations(int nextGeneration[], int previousGeneration[], int nGen
 	int nextBox = 0; // represents 1 bit value
 
 	string filename= getFilename();
-	fstream f("filename.txt" , f.out | f.app);
-	if (!f)
-    {
-        cout << "Error Opening File" << endl;
-        return -1;
-    }
-
-
 
 	cout << "-------------------------------" << endl;
 	cout<< "GENERATING CELLULLAR AUTOMATA." << endl; 
@@ -607,8 +616,9 @@ void computeGenerations(int nextGeneration[], int previousGeneration[], int nGen
 
 	// displays previous generation (first generation)
 	displayGeneration(previousGeneration, sizeGeneration);
+	appendArrayToFile(previousGeneration,sizeGeneration, filename);
 	//PrintGenerationToFile(previousGeneration);	
-	fwrite << previousGeneration;
+
 
 
 
@@ -673,7 +683,7 @@ void computeGenerations(int nextGeneration[], int previousGeneration[], int nGen
 
 		// displays generated generation (nextGeneration)
 		displayGeneration(nextGeneration,sizeGeneration);
-		fwrite<< previousGeneration;
+		appendArrayToFile(previousGeneration,sizeGeneration, filename);
 
 
 
@@ -697,10 +707,8 @@ void computeGenerations(int nextGeneration[], int previousGeneration[], int nGen
 /*
 	
 	Dsiplays recieved generation.
-
 	Parameter: generation[]. Array contain generation.
 	Parameter: size. Contains size of generation.
-
 */
 void displayGeneration(int generation[], int size)
 {
@@ -746,7 +754,6 @@ void generateFirstGeneration(int x, int gen[])
 
 /*
 		Creates computeGameOfLife Cellular Automata.
-
 */
 void generateGameOfLife()
 {
@@ -1027,9 +1034,7 @@ void generateGameOfLife()
 
 
 /*
-
 Method to print an array
-
 */
 void print(int array[], int size, string filename){
 	//Create an object
@@ -1055,4 +1060,3 @@ int main()
 	menu();
 	
 }
-
