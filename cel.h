@@ -9,6 +9,8 @@
 #include <cstdlib>
 #include <cstring>
 #include <fstream>
+#include <vector>
+#include <sstream>
 
 using namespace std;
 
@@ -36,5 +38,6 @@ void generateGameOfLife();
 void print(int array[], int size);
 void generateFirstGeneration(int x, int gen[]);
 void userDefFirstGen(int gen[], int size);
+void load();
 
 #endif
