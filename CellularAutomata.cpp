@@ -56,7 +56,7 @@ void menu()
 			cout << "-------------------------------" << endl;
 			cout << "1.	Cellular Automata." << endl;
 			cout << "2.	Game of Life." << endl;
-			cout << "3. 	Load Cellular Automata." << endl;
+			cout << "3. Load Cellular Automata." << endl;
 			cout << "0.	Exit." << endl;
 			cout << "-------------------------------" << endl;
 			cout << "Please enter you choice: " << endl;
@@ -149,11 +149,33 @@ void selectGen(int firGen[], int size)
 {
 	int choice;
 	//Print menu
+	cout << "\n-------------------------------" << endl;
+	cout << "\t Select First Generation." << endl;
+	cout << "-------------------------------" << endl;
 	cout << "1) Random" << endl;
 	cout << "2) Mid" << endl;
 	cout << "3) Custom" << endl;
+	cout << "-------------------------------" << endl;
+	cout << "Enter choice: " << endl;
 	cin >> choice;
+	cout << "-------------------------------" << endl;
 
+
+	while(!cin || choice <1 || choice >3)
+	{
+
+		cout << "Invalid Input.\n" << endl;
+		cout << "\n-------------------------------" << endl;
+		cout << "\t Select First Generation." << endl;
+		cout << "-------------------------------" << endl;
+		cout << "1) Random" << endl;
+		cout << "2) Mid" << endl;
+		cout << "3) Custom" << endl;
+		cout << "-------------------------------" << endl;
+		cout << "Enter choice: " << endl;
+		cin >> choice;
+		cout << "-------------------------------" << endl;
+	}
 	//Handles user choice.
 	switch(choice)
 	{
@@ -270,7 +292,7 @@ void getDimensions(int &size,int &generations)
 		cout << "	4) " << grid1[0] << "x" << grid1[1] << endl;
 		cout << "	5) " << grid2[0] << "x" << grid2[1] << endl;
 		cout << "	6) " << grid3[0] << "x" << grid3[1] << endl;
-		cout << "Manual" << endl;
+		cout << "Manual:" << endl;
 		cout << "\t7) Custom Dimensions." << endl;
 
 		cout << "-------------------------------" << endl;
@@ -420,18 +442,54 @@ void getRuleInput()
 	int choice;
 	// 
 	int rule0 = randomRule(), rule1 = randomRule(), rule2 = randomRule();
-	cout << "Select a rule to use." << endl;
-	cout << "1) Rule 30" << endl;
-	cout << "2) Rule 255" << endl; 
-	cout << "3) Rule 0" << endl;
-	cout << "4) Rule 45" << endl;
-	cout << "5) Rule " << rule0 << endl;
-	cout << "6) Rule " << rule1 << endl;
-	cout << "7) Rule " << rule2 << endl;
-	cout << "8) Custom Rule" << endl;
-	cout << "9) Input Rule as Binary value" << endl;
+	cout << "\n-------------------------------" << endl;
+	cout << "\tSelect a rule to use." << endl;
+	cout << "-------------------------------" << endl;
+	cout << "Preset:" << endl;
+	cout << "\t1) Rule 30" << endl;
+	cout << "\t2) Rule 255" << endl; 
+	cout << "\t3) Rule 0" << endl;
+	cout << "\t4) Rule 45" << endl;
+	cout << "Random:" << endl;
+	cout << "\t5) Rule " << rule0 << endl;
+	cout << "\t6) Rule " << rule1 << endl;
+	cout << "\t7) Rule " << rule2 << endl;
+	cout << "Manual:" << endl;
+	cout << "\t8) Custom Rule" << endl;
+	cout << "\t9) Input Rule as Binary value" << endl;
 
+	cout << "-------------------------------" << endl;
+	cout << "Enter Choice: " << endl;
 	cin >> choice; 
+	cout << "-------------------------------" << endl;
+
+	while(!cin || choice < 1 || choice >9)
+	{
+
+		cout << "\nInvalid Input." << endl;
+
+		cout << "\n-------------------------------" << endl;
+		cout << "\tSelect a rule to use." << endl;
+		cout << "-------------------------------" << endl;
+		cout << "Preset:" << endl;
+		cout << "\t1) Rule 30" << endl;
+		cout << "\t2) Rule 255" << endl; 
+		cout << "\t3) Rule 0" << endl;
+		cout << "\t4) Rule 45" << endl;
+		cout << "Random:" << endl;
+		cout << "\t5) Rule " << rule0 << endl;
+		cout << "\t6) Rule " << rule1 << endl;
+		cout << "\t7) Rule " << rule2 << endl;
+		cout << "Manual:" << endl;
+		cout << "\t8) Custom Rule" << endl;
+		cout << "\t9) Input Rule as Binary value" << endl;
+
+		cout << "-------------------------------" << endl;
+		cout << "Enter Choice: " << endl;
+		cin >> choice; 
+		cout << "-------------------------------" << endl;
+
+	}
 
 	// store integer
 	int ruleN;
@@ -565,6 +623,15 @@ void computeGenerations(int nextGeneration[], int previousGeneration[], int nGen
 
 	cout << "-------------------------------" << endl;
 	cout<< "GENERATING CELLULLAR AUTOMATA." << endl; 
+	cout << "Rule: {INPUT FUNCTION HERE}" << " | Binary Rule: ";
+
+	for(int i = 0; i<8; i++)
+	{
+
+		cout << ::rule[i];
+
+	}
+	cout << endl;
 	cout << "-------------------------------\n" << endl;
 
 	// displays previous generation (first generation)
@@ -757,14 +824,14 @@ void generateGameOfLife()
 			if (previousGeneration[i][j] == 1)
 			{
 
-				cout << "\u25A1" << 0; //previousGeneration[i][j];
+				cout << "\u25A1" << " "; 
 
 			}
 			else
 			{
 
 				// display white
-				cout << "\u25A0" << 0; //previousGeneration[i][j];
+				cout << "\u25A0" << previousGeneration[i][j];
 
 			}
 
@@ -953,7 +1020,7 @@ void generateGameOfLife()
 				if (nextGeneration[i][j] == 1)
 				{
 
-					cout << "\u25A1" << nextGeneration[i][j];
+					cout << "\u25A1" << " ";
 
 				}
 				else
