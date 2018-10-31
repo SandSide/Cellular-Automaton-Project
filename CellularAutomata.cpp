@@ -6,7 +6,6 @@ int rule[8] = {};
 
 /*
 	Menu method
-
 */
 void menu()
 {
@@ -196,9 +195,98 @@ void selectGen(int firGen[], int size)
 
 
 /*
+	Method that ask the user for a valid filename
+*/
+string getFilename(){
+	string filename;
+	bool isValid= false;
+
+	cout << ""<<endl;
+	cout <<"Enter a filename" <<endl;
+	cout << ""<<endl;
+
+	cin >>filename;
+	
+	string name= filename+".txt";
+	// create input file varaible
+	ifstream infile(name);
+
+	// if file is open (exists already)
+	if(infile.is_open()==true){
+		cout <<"The file: " <<filename <<" already exists" << endl;
+			// Check if anything was entered
+			// While the input is invalid
+			while(isValid !=true)
+			{
+			// Clear the terminal
+			system("clear");
+
+			cin.clear();
+			cin.ignore();
+
+			// Send Error message
+			cout << "\nError: You did not enter anything or a valid filename, try again" << endl; 
+			cout << "" << endl;
+
+			//Get a new filename from the user
+			cout << ""<<endl;
+			cout <<"Enter a filename" <<endl;
+			cout <<"" <<endl;
+
+			cin >>filename;
+
+			//Add a file extention
+			name= filename+".txt";
+			//Check if that file exits
+			ifstream infile(name);
+			if(infile.is_open()==false){
+				//file does not exit
+				isValid=true;
+			}
+		}
+	}
+	
+
+
+	return filename;
+}
+
+
+
+/*
+	Writes the data stored in an array into a file
+	Parameter: array[]		The Array that the user wants to print.
+	Parameter: size 	The size of the array.
+	Parameter: filename 	Name of the file that is gonig to be appended.
+*/
+void appendArrayToFile(int array[],int size, string filename){
+	//Create an Object of fstream
+	fstream fs;
+
+	//Alter the filename supplied by the user to add a .txt file type
+	string name= filename+".txt";
+	
+	//Open the file to append
+	fs.open(name,fstream::app);
+	
+	//Loop though the full array
+	for (int i = 0; i < size; ++i){
+		//Append each item of the array into the file
+		fs<< array[i];
+	}
+	
+	//add a comma to the end to speprate a line
+	fs<< ",\n";
+	
+	//Close the file
+	fs.close();
+}
+
+
+
+/*
 	
 	Collects all data needed to run ComputeGenerations, which will create a Cellular Automata.
-
 */
 void generateCellularAutomata()
 {
@@ -225,7 +313,6 @@ void generateCellularAutomata()
 /*
 	Will randomly select values to use for the grid size.
 	@param grid This is the input grid
-
 */
 void randomGridSize(int grid[2])
 {
@@ -432,10 +519,7 @@ int userBinaryRule()
 /*
 	
 	Gets integer user input to convert into binary and store in the parameter varaible.
-
 	Paramter: rule[8]. Array to store the rule.
-
-
 */
 void getRuleInput()
 {
@@ -490,6 +574,7 @@ void getRuleInput()
 		cout << "-------------------------------" << endl;
 
 	}
+
 
 	// store integer
 	int ruleN;
@@ -605,13 +690,11 @@ void calculateBinary(int arr[8],int val)
 
 /*
 	Creates 1-D Cellular Automata which is looped at the sides.
-
 	Parameter: nextGeneration[]. Array which will contain next generation based on previous generation.
 	Parameter: previousGeneration[]. Array which contains first generation. Will store previous generation as a new one is being created.
 	Parameter: rule[]. Contains the rule.
 	Parameter: nGenerations. Number which specifies how many generations will be made.
 	Parameter: sizeGeneration. Number which specifies the size of each generation.
-
 */
 void computeGenerations(int nextGeneration[], int previousGeneration[], int nGenerations, int sizeGeneration)
 {
@@ -621,9 +704,16 @@ void computeGenerations(int nextGeneration[], int previousGeneration[], int nGen
 	int currBox = 0; // represents 2 bit value
 	int nextBox = 0; // represents 1 bit value
 
+	string filename= getFilename();
+
 	cout << "-------------------------------" << endl;
 	cout<< "GENERATING CELLULLAR AUTOMATA." << endl; 
-	cout << "Rule: {INPUT FUNCTION HERE}" << " | Binary Rule: ";
+	cout << "-------------------------------\n" << endl;
+
+	// displays previous generation (first generation)
+	displayGeneration(previousGeneration, sizeGeneration);
+	//appendArrayToFile(previousGeneration,sizeGeneration, filename);
+	//PrintGenerationToFile(previousGeneration);	
 
 	for(int i = 0; i<8; i++)
 	{
@@ -636,6 +726,7 @@ void computeGenerations(int nextGeneration[], int previousGeneration[], int nGen
 
 	// displays previous generation (first generation)
 	displayGeneration(previousGeneration, sizeGeneration);
+
 
 	// creates nGenerations generations
 	for (int g = 1; g < nGenerations; g++)
@@ -698,7 +789,7 @@ void computeGenerations(int nextGeneration[], int previousGeneration[], int nGen
 
 		// displays generated generation (nextGeneration)
 		displayGeneration(nextGeneration,sizeGeneration);
-		appendmethod(nextGeneration,sizeGeneration,"text2");
+		appendArrayToFile(previousGeneration,sizeGeneration, filename);
 
 		// display next Generation
 		for (int k =0; k<sizeGeneration; k++)
@@ -720,10 +811,8 @@ void computeGenerations(int nextGeneration[], int previousGeneration[], int nGen
 /*
 	
 	Dsiplays recieved generation.
-
 	Parameter: generation[]. Array contain generation.
 	Parameter: size. Contains size of generation.
-
 */
 void displayGeneration(int generation[], int size)
 {
@@ -734,13 +823,10 @@ void displayGeneration(int generation[], int size)
 
 		if (generation[i] == 1)
 		{
-
 			cout << "\u25A1" << " ";
-
 		}
 		else
 		{
-
 			cout << "\u25A0" << generation[i];
 
 		}
@@ -767,7 +853,6 @@ void generateFirstGeneration(int x, int gen[])
 
 /*
 		Creates computeGameOfLife Cellular Automata.
-
 */
 void generateGameOfLife()
 {
@@ -1042,38 +1127,6 @@ void generateGameOfLife()
 		
 }
 
-void appendmethod(int array[],int size, string filename)
-{
-	//Create an Object of fstream
-	fstream fs;
-
-	//Alter the filename supplied by the user to add a .txt file type
-	string name= filename+".txt";
-	
-	//Open the file to append
-	fs.open(name,fstream::app);
-	
-	//Loop though the full array
-	for (int i = 0; i < size; i++)
-	{
-
-		//Append each item of the array into the file
-		fs << array[i];
-
-		if(!(i == size -1))
-		{
-
-			fs << ",";
-
-		}
-	}
-	
-	//add a comma to the end to speprate a line
-	fs << endl;
-	
-	//Close the file
-	fs.close();
-	
 }
 
 void load()
