@@ -26,6 +26,7 @@ void menu()
 		cout << "-------------------------------" << endl;
 		cout << "1.	Cellular Automata." << endl;
 		cout << "2.	Game of Life." << endl;
+		cout << "3. 	Load Cellular Automata." << endl;
 		cout << "0.	Exit." << endl;
 		cout << "-------------------------------" << endl;
 		cout << "Please enter you choice: " << endl;
@@ -35,7 +36,7 @@ void menu()
 		cout << "-------------------------------" << endl;
 
 		// While the input is invalid
-		while(!cin || userOption < 0 || userOption >2)
+		while(!cin || userOption < 0 || userOption >3)
 		{
 
 			// Clear the terminal
@@ -54,6 +55,7 @@ void menu()
 			cout << "-------------------------------" << endl;
 			cout << "1.	Cellular Automata." << endl;
 			cout << "2.	Game of Life." << endl;
+			cout << "3. Load Cellular Automata." << endl;
 			cout << "0.	Exit." << endl;
 			cout << "-------------------------------" << endl;
 			cout << "Please enter you choice: " << endl;
@@ -78,6 +80,11 @@ void menu()
 			
 			generateGameOfLife();
 
+		}
+		else if(userOption == 3)
+		{
+		 	load();
+				
 		}
 		else if (userOption == 0)
 		{
@@ -141,11 +148,33 @@ void selectGen(int firGen[], int size)
 {
 	int choice;
 	//Print menu
+	cout << "\n-------------------------------" << endl;
+	cout << "\t Select First Generation." << endl;
+	cout << "-------------------------------" << endl;
 	cout << "1) Random" << endl;
 	cout << "2) Mid" << endl;
 	cout << "3) Custom" << endl;
+	cout << "-------------------------------" << endl;
+	cout << "Enter choice: " << endl;
 	cin >> choice;
+	cout << "-------------------------------" << endl;
 
+
+	while(!cin || choice <1 || choice >3)
+	{
+
+		cout << "Invalid Input.\n" << endl;
+		cout << "\n-------------------------------" << endl;
+		cout << "\t Select First Generation." << endl;
+		cout << "-------------------------------" << endl;
+		cout << "1) Random" << endl;
+		cout << "2) Mid" << endl;
+		cout << "3) Custom" << endl;
+		cout << "-------------------------------" << endl;
+		cout << "Enter choice: " << endl;
+		cin >> choice;
+		cout << "-------------------------------" << endl;
+	}
 	//Handles user choice.
 	switch(choice)
 	{
@@ -350,7 +379,7 @@ void getDimensions(int &size,int &generations)
 		cout << "	4) " << grid1[0] << "x" << grid1[1] << endl;
 		cout << "	5) " << grid2[0] << "x" << grid2[1] << endl;
 		cout << "	6) " << grid3[0] << "x" << grid3[1] << endl;
-		cout << "Manual" << endl;
+		cout << "Manual:" << endl;
 		cout << "\t7) Custom Dimensions." << endl;
 
 		cout << "-------------------------------" << endl;
@@ -497,18 +526,55 @@ void getRuleInput()
 	int choice;
 	// 
 	int rule0 = randomRule(), rule1 = randomRule(), rule2 = randomRule();
-	cout << "Select a rule to use." << endl;
-	cout << "1) Rule 30" << endl;
-	cout << "2) Rule 255" << endl; 
-	cout << "3) Rule 0" << endl;
-	cout << "4) Rule 45" << endl;
-	cout << "5) Rule " << rule0 << endl;
-	cout << "6) Rule " << rule1 << endl;
-	cout << "7) Rule " << rule2 << endl;
-	cout << "8) Custom Rule" << endl;
-	cout << "9) Input Rule as Binary value" << endl;
+	cout << "\n-------------------------------" << endl;
+	cout << "\tSelect a rule to use." << endl;
+	cout << "-------------------------------" << endl;
+	cout << "Preset:" << endl;
+	cout << "\t1) Rule 30" << endl;
+	cout << "\t2) Rule 255" << endl; 
+	cout << "\t3) Rule 0" << endl;
+	cout << "\t4) Rule 45" << endl;
+	cout << "Random:" << endl;
+	cout << "\t5) Rule " << rule0 << endl;
+	cout << "\t6) Rule " << rule1 << endl;
+	cout << "\t7) Rule " << rule2 << endl;
+	cout << "Manual:" << endl;
+	cout << "\t8) Custom Rule" << endl;
+	cout << "\t9) Input Rule as Binary value" << endl;
 
+	cout << "-------------------------------" << endl;
+	cout << "Enter Choice: " << endl;
 	cin >> choice; 
+	cout << "-------------------------------" << endl;
+
+	while(!cin || choice < 1 || choice >9)
+	{
+
+		cout << "\nInvalid Input." << endl;
+
+		cout << "\n-------------------------------" << endl;
+		cout << "\tSelect a rule to use." << endl;
+		cout << "-------------------------------" << endl;
+		cout << "Preset:" << endl;
+		cout << "\t1) Rule 30" << endl;
+		cout << "\t2) Rule 255" << endl; 
+		cout << "\t3) Rule 0" << endl;
+		cout << "\t4) Rule 45" << endl;
+		cout << "Random:" << endl;
+		cout << "\t5) Rule " << rule0 << endl;
+		cout << "\t6) Rule " << rule1 << endl;
+		cout << "\t7) Rule " << rule2 << endl;
+		cout << "Manual:" << endl;
+		cout << "\t8) Custom Rule" << endl;
+		cout << "\t9) Input Rule as Binary value" << endl;
+
+		cout << "-------------------------------" << endl;
+		cout << "Enter Choice: " << endl;
+		cin >> choice; 
+		cout << "-------------------------------" << endl;
+
+	}
+
 
 	// store integer
 	int ruleN;
@@ -649,7 +715,17 @@ void computeGenerations(int nextGeneration[], int previousGeneration[], int nGen
 	//appendArrayToFile(previousGeneration,sizeGeneration, filename);
 	//PrintGenerationToFile(previousGeneration);	
 
+	for(int i = 0; i<8; i++)
+	{
 
+		cout << ::rule[i];
+
+	}
+	cout << endl;
+	cout << "-------------------------------\n" << endl;
+
+	// displays previous generation (first generation)
+	displayGeneration(previousGeneration, sizeGeneration);
 
 
 	// creates nGenerations generations
@@ -715,8 +791,6 @@ void computeGenerations(int nextGeneration[], int previousGeneration[], int nGen
 		displayGeneration(nextGeneration,sizeGeneration);
 		appendArrayToFile(previousGeneration,sizeGeneration, filename);
 
-
-
 		// display next Generation
 		for (int k =0; k<sizeGeneration; k++)
 		{	
@@ -749,14 +823,11 @@ void displayGeneration(int generation[], int size)
 
 		if (generation[i] == 1)
 		{
-
-			cout << red << generation[i];
-
+			cout << "\u25A1" << " ";
 		}
 		else
 		{
-
-			cout << reset << generation[i];
+			cout << "\u25A0" << generation[i];
 
 		}
 
@@ -765,8 +836,6 @@ void displayGeneration(int generation[], int size)
 	cout << reset << endl;
 
 }
-
-
 
 //	Will randomly generate the first generation.
 //	@param x The size of the generation.
@@ -840,14 +909,14 @@ void generateGameOfLife()
 			if (previousGeneration[i][j] == 1)
 			{
 
-				cout << "\u25A1" << 0; //previousGeneration[i][j];
+				cout << "\u25A1" << " "; 
 
 			}
 			else
 			{
 
 				// display white
-				cout << "\u25A0" << 0; //previousGeneration[i][j];
+				cout << "\u25A0" << previousGeneration[i][j];
 
 			}
 
@@ -1036,7 +1105,7 @@ void generateGameOfLife()
 				if (nextGeneration[i][j] == 1)
 				{
 
-					cout << "\u25A1" << nextGeneration[i][j];
+					cout << "\u25A1" << " ";
 
 				}
 				else
@@ -1058,30 +1127,124 @@ void generateGameOfLife()
 		
 }
 
+}
 
-/*
-Method to print an array
-*/
-void print(int array[], int size, string filename){
-	//Create an object
-	ofstream outputFile;
+void load()
+{
 
-	//Open the file
-	string file= filename+ ".txt";
-	outputFile.open(file);
+	cout << "\nAvailable files to load: \n" << endl;
+	
+	// Display txt files vetically
+	system("ls | grep .txt | cat");
 
-	//Print the lines of code onto file
-	for (int i = 0; i < size; ++i)
+	// Variable to store user input
+	string filename;
+
+	// Ask for user input
+	cout << "\nPlease enter file name: " << endl;
+	cin >> filename;
+
+	// Add .txt to string to make it easier for opening file
+	filename += ".txt";
+
+	// create input file varaible
+	ifstream infile;
+
+	// Open file as input
+	infile.open(filename, ios::in);
+
+	// if file is open (exists in this case)
+	if(infile.is_open() == 1)
 	{
-		//Print the line into the file
-		outputFile << array[i] << " " ;
+
+		// P0W how-to-detect-empty-file-in-c stackoverflow
+		// If file is empty 
+		if(infile.peek() == ifstream::traits_type::eof())
+		{
+
+			cout << "\nFILE IS EMPTY. " << endl;
+
+		}
+		else
+		{
+
+			cout << "\nDISPLAYING FILE: " << endl;
+
+			// For every line
+			while(!infile.eof())
+			{
+
+				// local varaibles
+				string line;
+				vector<int> vect;
+
+				// get next line in the file
+				getline(infile, line);
+
+				// store line in stringstream
+				stringstream ss(line);
+
+				unsigned int i;
+
+				// while
+				while (ss >> i)
+				{
+
+					// push i onto back of string
+					vect.push_back(i);
+
+					// if string has ", or " " ignore
+					if(ss.peek() == ',' || ss.peek() == ' ')
+					{
+
+						ss.ignore();
+
+					}
+
+				}
+
+				// for every 1 and 0 in file display it
+				for(i=0; i <vect.size(); i++)
+				{
+
+					if(vect.at(i) == 1)
+					{
+
+						cout << "\u25A1" << " ";
+
+					}
+					else
+					{
+
+						cout << "\u25A0" << vect.at(i);
+
+					}
+
+				}
+
+				cout << endl;
+
+			}
+
+		}
+
+	}
+	else
+	{
+
+		cout << "\nTHE FILE DOES NOT EXIST." << endl;
+
 	}
 
-	//CLose file
-	outputFile.close();
+	// close file
+	infile.close();
+
 }
 
-int main(){
+int main()
+{
+
 	menu();
-	return 0;
+	
 }
+
