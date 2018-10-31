@@ -246,8 +246,6 @@ string getFilename(){
 		}
 	}
 	
-
-
 	return filename;
 }
 
@@ -270,13 +268,22 @@ void appendArrayToFile(int array[],int size, string filename){
 	fs.open(name,fstream::app);
 	
 	//Loop though the full array
-	for (int i = 0; i < size; ++i){
+	for (int i = 0; i < size; ++i)
+	{
+
 		//Append each item of the array into the file
 		fs<< array[i];
+
+		if(i != size-1)
+		{
+
+			fs << ",";
+
+		}
+
 	}
-	
-	//add a comma to the end to speprate a line
-	fs<< ",\n";
+
+	fs << endl;
 	
 	//Close the file
 	fs.close();
@@ -708,12 +715,7 @@ void computeGenerations(int nextGeneration[], int previousGeneration[], int nGen
 
 	cout << "-------------------------------" << endl;
 	cout<< "GENERATING CELLULLAR AUTOMATA." << endl; 
-	cout << "-------------------------------\n" << endl;
-
-	// displays previous generation (first generation)
-	displayGeneration(previousGeneration, sizeGeneration);
-	//appendArrayToFile(previousGeneration,sizeGeneration, filename);
-	//PrintGenerationToFile(previousGeneration);	
+	cout << "Rule: " << "{CODE}" << "| Binary: ";
 
 	for(int i = 0; i<8; i++)
 	{
@@ -726,7 +728,7 @@ void computeGenerations(int nextGeneration[], int previousGeneration[], int nGen
 
 	// displays previous generation (first generation)
 	displayGeneration(previousGeneration, sizeGeneration);
-
+	appendArrayToFile(previousGeneration,sizeGeneration, filename);
 
 	// creates nGenerations generations
 	for (int g = 1; g < nGenerations; g++)
@@ -1125,8 +1127,6 @@ void generateGameOfLife()
 
 	}
 		
-}
-
 }
 
 void load()
