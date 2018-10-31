@@ -164,21 +164,31 @@ void selectGen(int firGen[], int size)
 	}
 }
 
+
+/*
+	Method that ask the user for a valid filename
+*/
 string getFilename(){
 	string filename;
-
+	bool isValid= false;
 
 	cout << ""<<endl;
 	cout <<"Enter a filename" <<endl;
 	cout << ""<<endl;
 
 	cin >>filename;
+	
+	string name= filename+".txt";
+	// create input file varaible
+	ifstream infile(name);
 
-	//Check if anything was entered
-	// While the input is invalid
-		while(!cin)
-		{
-
+	// if file is open (exists already)
+	if(infile.is_open()==true){
+		cout <<"The file: " <<filename <<" already exists" << endl;
+			// Check if anything was entered
+			// While the input is invalid
+			while(isValid !=true)
+			{
 			// Clear the terminal
 			system("clear");
 
@@ -189,17 +199,37 @@ string getFilename(){
 			cout << "\nError: You did not enter anything or a valid filename, try again" << endl; 
 			cout << "" << endl;
 
+			//Get a new filename from the user
 			cout << ""<<endl;
 			cout <<"Enter a filename" <<endl;
 			cout <<"" <<endl;
 
 			cin >>filename;
+
+			//Add a file extention
+			name= filename+".txt";
+			//Check if that file exits
+			ifstream infile(name);
+			if(infile.is_open()==false){
+				//file does not exit
+				isValid=true;
+			}
 		}
+	}
+	
 
 
 	return filename;
 }
 
+
+
+/*
+	Writes the data stored in an array into a file
+	Parameter: array[]		The Array that the user wants to print.
+	Parameter: size 	The size of the array.
+	Parameter: filename 	Name of the file that is gonig to be appended.
+*/
 void appendArrayToFile(int array[],int size, string filename){
 	//Create an Object of fstream
 	fstream fs;
@@ -616,7 +646,7 @@ void computeGenerations(int nextGeneration[], int previousGeneration[], int nGen
 
 	// displays previous generation (first generation)
 	displayGeneration(previousGeneration, sizeGeneration);
-	appendArrayToFile(previousGeneration,sizeGeneration, filename);
+	//appendArrayToFile(previousGeneration,sizeGeneration, filename);
 	//PrintGenerationToFile(previousGeneration);	
 
 
@@ -1029,10 +1059,6 @@ void generateGameOfLife()
 }
 
 
-
-
-
-
 /*
 Method to print an array
 */
@@ -1055,8 +1081,7 @@ void print(int array[], int size, string filename){
 	outputFile.close();
 }
 
-int main()
-{
+int main(){
 	menu();
-	
+	return 0;
 }
