@@ -250,7 +250,6 @@ string getFilename(){
 }
 
 
-
 /*
 	Writes the data stored in an array into a file
 	Parameter: array[]		The Array that the user wants to print.
@@ -292,6 +291,7 @@ void appendArrayToFile(int array[],int size, string filename){
 
 
 /*
+
 	
 	Collects all data needed to run ComputeGenerations, which will create a Cellular Automata.
 */
@@ -494,6 +494,7 @@ int userBinaryRule()
 	//While the rule has not been calculated loop repeats.
 	while(!calculated)
 	{
+
 		//A boolean to test if the value entered is 8 bytes
 		bool eightByte = false;
 		while (!eightByte)
@@ -542,7 +543,9 @@ int userBinaryRule()
 					val += pow(2,7-looped);
 				}
 			}
+
 			//Increments the count of the times loop has occured.
+
 			looped++;
 		}
 	}
@@ -753,8 +756,33 @@ void computeGenerations(int nextGeneration[], int previousGeneration[], int nGen
 	int prevBox = 0; // represents 4 bit valuecomputeGen
 	int currBox = 0; // represents 2 bit value
 	int nextBox = 0; // represents 1 bit value
+	int willBeSavedToFile=0;
+	string filename= "";
 
-	string filename= getFilename();
+
+	//Ask User if they want to print to file
+	cout << "Do you want to print the the Cellular Automata to file?"<< "\n" <<"1. Yes"<< "\n" << "2. No"<<endl;
+	cin >> willBeSavedToFile;
+
+			// While the opton entered is not one of the options or is an incorrect varaible type
+			while(!cin || willBeSavedToFile <1 || willBeSavedToFile > 2)
+			{
+				cin.clear();
+				cin.ignore(); // skips stream data
+
+
+				// ask user to  re-enter the size
+				cout << "\nThe option you have entered is invalid. Please choose a number from the options below: " << endl;
+				//Ask User if they want to print to file
+				cout << "Do you want to print the the Cellular Automata to file?"<< "\n" <<"1. Yes"<< "\n" << "2. No"<<endl;
+				cin >> willBeSavedToFile;
+			}
+
+			if(willBeSavedToFile==1){
+				//Get the filename form the user
+				filename= getFilename();
+			}
+	
 
 	cout << "-------------------------------" << endl;
 	cout<< "GENERATING CELLULLAR AUTOMATA." << endl; 
@@ -825,7 +853,11 @@ void computeGenerations(int nextGeneration[], int previousGeneration[], int nGen
 
 		// displays generated generation (nextGeneration)
 		displayGeneration(nextGeneration,sizeGeneration);
-		appendArrayToFile(previousGeneration,sizeGeneration, filename);
+
+		if (willBeSavedToFile==1){
+		//Print the generation to a file
+			appendArrayToFile(previousGeneration,sizeGeneration, filename);
+		}
 
 		// display next Generation
 		for (int k =0; k<sizeGeneration; k++)
