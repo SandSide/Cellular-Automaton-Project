@@ -488,36 +488,43 @@ Will take the binary value as a string and convert it to decimal.
 int userBinaryRule()
 {
 	//Variables are initialised to store the binary, decimal, and loop exit.
-	char binVal[8];
+	string binVal;
 	int val = 0;
 	bool calculated = false;
+	//While the rule has not been calculated loop repeats.
 	while(!calculated)
 	{
+		//Gets user input.
 		val = 0;
 		cout << "Enter binary value" << endl;
-		scanf("%8c",binVal);
+		cin >> binVal;
+		//Counts the number of times the for loop repeats.
+		int looped = 0;
 
-		for (int i = 0; i < 8; ++i)
+		//Loops for the string length.
+		for (string::iterator i = binVal.begin(); i != binVal.end(); ++i)
 		{
-			if (binVal[i] != '1' && binVal[i] != '0')
+			//If the current value of the iterator is either not 1 and 0
+			if (*i != '1' && *i != '0')
 			{
-				i = 8;
+				//Exits for loop
+				i = binVal.end();
+				//Makes sure input is recieved once again.
 				calculated = false;
 				cout << "Value not a binary number. Try again." << endl;
 			}
 			else
 			{
+				//Makes sure loop exits if last char is valid.
 				calculated = true;
-			}
-			
-			if (calculated)
-			{
-				if (binVal[i] == '1')
+
+				//If the value is one, adds the relevant power.
+				if (*i == '1')
 				{
-					val += pow(2,7-i);
+					val += pow(2,7-looped);
 				}
 			}
-			
+			looped++;
 		}
 	}
 	return val;
@@ -630,8 +637,24 @@ void getRuleInput()
 			cout << endl;
 		break;
 		case 9:
-			//Will 
-			ruleN = userBinaryRule();
+			//Will allow user to enter a binary value to compute.
+			bool correct = false;
+			while(!correct)
+			{
+				ruleN = userBinaryRule();
+				cout << "You entered rule " << ruleN << endl;
+				cout << "To confirm value enter relevant option:"
+				cout << "1) Confirm" << endl;
+				cout << "2) Re-enter value" << endl;
+				int option;
+				cin >> option;
+				//If user confirms loop exits.
+				if (option == 1)
+				{
+					correct = true;
+				}
+			}
+			
 		break;
 	}
 
