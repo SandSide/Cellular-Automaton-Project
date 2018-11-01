@@ -324,7 +324,7 @@ void generateCellularAutomata()
 void randomGridSize(int grid[2])
 {
 	//Set x and y values in the grid.
-	grid[0] = rand() % 199 + 2;
+	grid[0] = rand() % 99 + 2;
 	grid[1] = rand() % 44 + 2;
 }
 
@@ -436,7 +436,7 @@ void getDimensions(int &size,int &generations)
 
 
 			// while the size entered for the array is less than 2 or entered bad varaible type
-			while(size < 2 || !cin || size >200)
+			while(size < 2 || !cin || size >100)
 			{
 
 				cin.clear();
@@ -444,7 +444,7 @@ void getDimensions(int &size,int &generations)
 
 
 				// ask user to  re-enter the size
-				cout << "\nThe size you entered is invalid. Please enter a number between 2 and 200." << endl;
+				cout << "\nThe size you entered is invalid. Please enter a number between 2 and 100." << endl;
 				cout << "Please enter the size of the generations: " << endl;
 				cin >> size;
 
