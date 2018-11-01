@@ -385,7 +385,7 @@ void getDimensions(int &size,int &generations)
 		cin.clear();
 		cin.ignore(); // skips stream data
 
-		cout << "\nInvalid Input." << endl;
+		cout << "\nError: An invalid optino was entered please try aain with the options below:" << endl;
 		cout << "\n-------------------------------" << endl; 
 		cout << "   Select Automata Dimensions." << endl;
 		cout << "-------------------------------" << endl;
