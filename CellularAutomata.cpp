@@ -494,10 +494,28 @@ int userBinaryRule()
 	//While the rule has not been calculated loop repeats.
 	while(!calculated)
 	{
-		//Gets user input.
-		val = 0;
-		cout << "Enter binary value" << endl;
-		cin >> binVal;
+		//A boolean to test if the value entered is 8 bytes
+		bool eightByte = false;
+		while (!eightByte)
+		{
+			//Gets user input.
+			val = 0;
+			cout << "Enter binary value" << endl;
+			cin >> binVal;
+
+			//If the entered value is not 8 bytes.
+			if (binVal.size() != 8)
+			{
+				//Will inform user and recieve input again.
+				cout << "Make sure you use 8 characters." << endl;
+			}
+			else
+			{
+				//Exits input loop.
+				eightByte = true;
+			}
+		}
+
 		//Counts the number of times the for loop repeats.
 		int looped = 0;
 
@@ -524,6 +542,7 @@ int userBinaryRule()
 					val += pow(2,7-looped);
 				}
 			}
+			//Increments the count of the times loop has occured.
 			looped++;
 		}
 	}
