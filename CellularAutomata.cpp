@@ -527,6 +527,7 @@ int userBinaryRule()
 			looped++;
 		}
 	}
+
 	return val;
 }
 
@@ -738,15 +739,6 @@ void computeGenerations(int nextGeneration[], int previousGeneration[], int nGen
 
 	cout << "-------------------------------" << endl;
 	cout<< "GENERATING CELLULLAR AUTOMATA." << endl; 
-	cout << "Rule: " << "{CODE}" << "| Binary: ";
-
-	for(int i = 0; i<8; i++)
-	{
-
-		cout << ::rule[i];
-
-	}
-	cout << endl;
 	cout << "-------------------------------\n" << endl;
 
 	// displays previous generation (first generation)
