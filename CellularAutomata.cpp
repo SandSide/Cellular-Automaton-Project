@@ -1,3 +1,6 @@
+// Patryk Jakubek - 010011784
+
+
 #include "cel.h"
 
 //	stores the rule throughout the program.
@@ -26,7 +29,8 @@ void menu()
 		cout << "-------------------------------" << endl;
 		cout << "1.	Cellular Automata." << endl;
 		cout << "2.	Game of Life." << endl;
-		cout << "3.	Load Cellular Automata." << endl;
+		cout << "3. 	Load Cellular Automata." << endl;
+		cout << "4. 	2D Automata." << endl;
 		cout << "0.	Exit." << endl;
 		cout << "-------------------------------" << endl;
 		cout << "Please enter you choice: " << endl;
@@ -36,7 +40,7 @@ void menu()
 		cout << "-------------------------------" << endl;
 
 		// While the input is invalid
-		while(!cin || userOption < 0 || userOption >3)
+		while(!cin || userOption < 0 || userOption >4)
 		{
 
 			// Clear the terminal
@@ -53,9 +57,10 @@ void menu()
 			cout << "\n-------------------------------" << endl;
 			cout << "\t MAIN MENU" << endl;
 			cout << "-------------------------------" << endl;
-			cout << "1.	Cellular Automata." << endl;
+			cout << "1. 	Cellular Automata." << endl;
 			cout << "2.	Game of Life." << endl;
-			cout << "3.	Load Cellular Automata." << endl;
+			cout << "3. 	Load Cellular Automata." << endl;
+			cout << "4. 	2D Automata." << endl;
 			cout << "0.	Exit." << endl;
 			cout << "-------------------------------" << endl;
 			cout << "Please enter you choice: " << endl;
@@ -84,6 +89,12 @@ void menu()
 		else if(userOption == 3)
 		{
 		 	load();
+				
+		}
+
+		else if(userOption == 4)
+		{
+		 	Generate2DAutomata();
 				
 		}
 		else if (userOption == 0)
@@ -953,13 +964,14 @@ void generateGameOfLife()
 	system("clear");
 	system("clear");
 
-	// make some blocks black
-	for(int i = 10; i < 20; i++)
+
+	for(int i = 9; i < 15; i++)
 	{
 
-		for(int j = 10; j <20; j++)
+		for(int j = 9; j <15; j++)
 		{	
 
+			
 			previousGeneration[i][j] = 1;
 
 		}
@@ -995,11 +1007,11 @@ void generateGameOfLife()
 	}
 
 	// do 100 times
-	for(int m = 0; m <100; m++)
+	for(int m = 0; m <60; m++)
 	{
 
 		// display name
-		cout << "\n\t\t\t\t  GAME OF LIFE" << endl;
+		cout << "\n\t\t\t\t  GAME OF LIFE" << "\t\tDuration: " << m << "/60 seconds." << endl;
 
 		// for every item in the 2-D array
 		for(int i = 0; i < sizeY ; i++)
@@ -1195,6 +1207,274 @@ void generateGameOfLife()
 		
 }
 
+/*
+	
+	Generates A 20x20 2D automata.
+
+*/
+void Generate2DAutomata()
+{
+
+	// counts how mnay alive neighbours around the block
+	int aliveNeb = 0;
+
+	// definining the size of the array
+	const int size = 40;
+	const int sizeX = size;
+	const int sizeY = size;
+
+	int previousGeneration[sizeY][sizeX];
+	int nextGeneration[sizeY][sizeX];
+
+	// initalising the generations
+	for (int j = 0; j <sizeY; j++)
+	{
+		// for every item in the generation, make it 0
+		for(int i = 0; i <sizeX ; i++)
+		{
+
+			previousGeneration[j][i] = 0;
+			nextGeneration[j][i] = 0;
+
+		}
+	}
+
+	// clearing the terminal
+	system("clear");
+	system("clear");
+
+	// make some blocks black
+	for(int i = 10; i < 14; i++)
+	{
+
+		for(int j = 10; j <14; j++)
+		{	
+
+			previousGeneration[i][j] = 1;
+			previousGeneration[sizeX-i][sizeX-j] = 1;
+
+		}
+
+	}
+
+	// display first generation
+	for (int i = 0; i < sizeY; i++)
+	{
+
+		for(int j = 0; j <sizeX ; j++)
+		{
+
+			// if block is 1, display black
+			if (previousGeneration[i][j] == 1)
+			{
+
+				cout << "\u25A1" << " "; 
+
+			}
+			else
+			{
+
+				// display white
+				cout << "\u25A0" << previousGeneration[i][j];
+
+			}
+
+		}
+
+		cout << reset << endl;
+
+	}
+
+	// do 100 times
+	for(int m = 0; m <60; m++)
+	{
+
+		// display name
+		cout << "\n\t\t\t\t  2D Cellular Automata" << "\t    Duration: " << m <<"/60 seconds." << endl;
+
+		// for every item in the 2-D array
+		for(int i = 0; i < sizeY ; i++)
+		{
+
+			for(int j = 0; j <sizeX ; j++)
+			{
+
+				// if at right-top corner
+				if(i == 0 && j == 0)
+				{
+
+					aliveNeb = 0;
+					aliveNeb += (previousGeneration[sizeY-1][sizeX-1] + previousGeneration[sizeY-1][j] + previousGeneration[sizeY-1][j+1]);
+					aliveNeb += (previousGeneration[i][sizeX-1] + previousGeneration[i][j+1]);
+					aliveNeb += (previousGeneration[i+1][sizeX-1] + previousGeneration[i+1][j] + previousGeneration[i+1][j+1]);
+
+				}
+
+				// if at right-bottom corner
+				else if (i == (sizeY-1) && j == 0)
+				{
+
+					aliveNeb = 0;
+					aliveNeb += (previousGeneration[i+1][sizeX-1] + previousGeneration[i+1][j] + previousGeneration[i+1][j+1]);
+					aliveNeb += (previousGeneration[i][sizeX-1] + previousGeneration[i][j+1]);
+					aliveNeb += (previousGeneration[0][sizeX-1] + previousGeneration[0][j] + previousGeneration[0][j+1]);
+
+				}
+
+				// if at left-top corner
+				else if (i == 0 && j == (sizeX - 1))
+				{
+
+					aliveNeb = 0;
+					aliveNeb += (previousGeneration[sizeY-1][j-1] + previousGeneration[sizeY-1][j] + previousGeneration[sizeY-1][0]);
+					aliveNeb += (previousGeneration[i][j-1] + previousGeneration[i][0]);
+					aliveNeb += (previousGeneration[i+1][j-1] + previousGeneration[i+1][j] + previousGeneration[i+1][0]);
+
+				}
+
+				// if at left-bottom corner
+				else if (i == (sizeY-1) && j == (sizeX - 1))
+				{
+
+					aliveNeb = 0;
+					aliveNeb += (previousGeneration[i-1][j-1] + previousGeneration[i-1][j] + previousGeneration[i-1][0]);
+					aliveNeb += (previousGeneration[i][j-1] + previousGeneration[i][0]);
+					aliveNeb += (previousGeneration[0][j-1] + previousGeneration[0][j] + previousGeneration[0][0]);
+
+				}
+
+				// if at left border
+				else if(i == 0)
+				{
+
+					aliveNeb = 0;
+					aliveNeb += (previousGeneration[sizeY-1][j-1] + previousGeneration[sizeY-1][j] + previousGeneration[sizeY-1][j+1]);
+					aliveNeb += (previousGeneration[i][j-1] + previousGeneration[i][j+1]);
+					aliveNeb += (previousGeneration[i+1][j+1] + previousGeneration[i+1][j] + previousGeneration[i+1][j+1]);
+
+
+				}
+
+				// if at right border
+				else if(i == sizeY -1)
+				{
+
+					aliveNeb = 0;
+					aliveNeb += (previousGeneration[i-1][j-1] + previousGeneration[i-1][j] + previousGeneration[i-1][j+1]);
+					aliveNeb += (previousGeneration[i][j-1] + previousGeneration[i][j+1]);
+					aliveNeb += (previousGeneration[0][j+1] + previousGeneration[0][j] + previousGeneration[0][j+1]);
+
+				}
+
+				// if at top border
+				else if(j == 0)
+				{
+
+					aliveNeb = 0;
+					aliveNeb += (previousGeneration[i-1][sizeX-1] + previousGeneration[i-1][j] + previousGeneration[i-1][j+1]);
+					aliveNeb += (previousGeneration[i][sizeX-1] + previousGeneration[i][j+1]);
+					aliveNeb += (previousGeneration[i+1][sizeX-1] + previousGeneration[i+1][j] + previousGeneration[i+1][j+1]);
+
+				}
+
+				// if at bottom border
+				else if(j == sizeX-1)
+				{
+
+					aliveNeb = 0;
+					aliveNeb += (previousGeneration[i-1][j-1] + previousGeneration[i-1][j] + previousGeneration[i-1][0]);
+					aliveNeb += (previousGeneration[i][j-1] + previousGeneration[i][0]);
+					aliveNeb += (previousGeneration[i+1][j-1] + previousGeneration[i+1][j] + previousGeneration[i+1][0]);
+
+				}
+				else
+				{
+
+					aliveNeb = 0;
+					aliveNeb += (previousGeneration[i-1][j-1] + previousGeneration[i-1][j] + previousGeneration[i-1][j+1]);
+					aliveNeb += (previousGeneration[i][j-1] + previousGeneration[i][j+1]);
+					aliveNeb += (previousGeneration[i+1][j-1] + previousGeneration[i+1][j] + previousGeneration[i+1][j+1]);
+
+				}
+				
+				// if black
+				if(previousGeneration[i][j] == 1) 
+				{	
+
+					// if have even 1s
+					if(aliveNeb == 0 || aliveNeb == 2 || aliveNeb == 4 || aliveNeb == 6 || aliveNeb == 8)
+					{
+
+						// becomes white
+						nextGeneration[i][j] = 0;
+
+					}
+
+				}
+
+				// if white
+				else if(previousGeneration[i][j] == 0)
+				{
+
+					// if have no even 1s
+					if(!(aliveNeb == 0 || aliveNeb == 2 || aliveNeb == 4 || aliveNeb == 6 || aliveNeb == 8))
+					{
+
+						// becomes black
+						nextGeneration[i][j] = 1;
+
+					}
+
+				}
+
+			}
+
+		}
+
+		// sleep for 1 second
+	    sleep_until(system_clock::now() + 1s);
+	    system("clear");
+	   	system("clear");
+
+	   	// for every item in the aray, display it
+		for (int i = 0; i < sizeY; i++)
+		{
+
+			// for every item in the generation, make it 0
+			for(int j = 0; j <sizeX; j++)
+			{
+
+				if (nextGeneration[i][j] == 1)
+				{
+
+					cout << "\u25A1" << " ";
+
+				}
+				else
+				{
+
+					cout << "\u25A0" << nextGeneration[i][j];
+
+				}
+
+				previousGeneration[i][j] = nextGeneration[i][j];
+
+			}
+
+			cout << reset << endl;
+
+		}
+
+	}
+
+}
+
+/*
+	
+	Loads Cellular Automata loaded from an external text file
+
+
+*/
 void load()
 {
 

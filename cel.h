@@ -11,6 +11,7 @@
 #include <fstream>
 #include <vector>
 #include <sstream>
+#include <string>
 
 using namespace std;
 
@@ -38,10 +39,10 @@ void generateGameOfLife();
 void print(int array[], int size);
 void generateFirstGeneration(int x, int gen[]);
 void userDefFirstGen(int gen[], int size);
-
+void Generate2DAutomata();
+void load();
 void appendArrayToFile(int array[],int size, string filename);
 string getFilename();
-void load();
 
 #endif
 
