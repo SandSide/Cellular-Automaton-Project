@@ -643,7 +643,7 @@ void getRuleInput()
 			{
 				ruleN = userBinaryRule();
 				cout << "You entered rule " << ruleN << endl;
-				cout << "To confirm value enter relevant option:"
+				cout << "To confirm value enter relevant option:" << endl;
 				cout << "1) Confirm" << endl;
 				cout << "2) Re-enter value" << endl;
 				int option;
