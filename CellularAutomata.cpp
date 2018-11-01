@@ -151,9 +151,9 @@ void selectGen(int firGen[], int size)
 	cout << "\n-------------------------------" << endl;
 	cout << "\t Select First Generation." << endl;
 	cout << "-------------------------------" << endl;
-	cout << "1) Random" << endl;
-	cout << "2) Mid" << endl;
-	cout << "3) Custom" << endl;
+	cout << "1) Generate Random first generation." << endl;
+	cout << "2) Set middle to on/black." << endl;
+	cout << "3) Enter your own first generation." << endl;
 	cout << "-------------------------------" << endl;
 	cout << "Enter choice: " << endl;
 	cin >> choice;
@@ -246,8 +246,6 @@ string getFilename(){
 		}
 	}
 	
-
-
 	return filename;
 }
 
@@ -270,13 +268,22 @@ void appendArrayToFile(int array[],int size, string filename){
 	fs.open(name,fstream::app);
 	
 	//Loop though the full array
-	for (int i = 0; i < size; ++i){
+	for (int i = 0; i < size; ++i)
+	{
+
 		//Append each item of the array into the file
 		fs<< array[i];
+
+		if(i != size-1)
+		{
+
+			fs << ",";
+
+		}
+
 	}
-	
-	//add a comma to the end to speprate a line
-	fs<< ",\n";
+
+	fs << endl;
 	
 	//Close the file
 	fs.close();
@@ -317,7 +324,7 @@ void generateCellularAutomata()
 void randomGridSize(int grid[2])
 {
 	//Set x and y values in the grid.
-	grid[0] = rand() % 199 + 2;
+	grid[0] = rand() % 99 + 2;
 	grid[1] = rand() % 44 + 2;
 }
 
@@ -429,7 +436,7 @@ void getDimensions(int &size,int &generations)
 
 
 			// while the size entered for the array is less than 2 or entered bad varaible type
-			while(size < 2 || !cin || size >200)
+			while(size < 2 || !cin || size >100)
 			{
 
 				cin.clear();
@@ -437,7 +444,7 @@ void getDimensions(int &size,int &generations)
 
 
 				// ask user to  re-enter the size
-				cout << "\nThe size you entered is invalid. Please enter a number between 2 and 200." << endl;
+				cout << "\nThe size you entered is invalid. Please enter a number between 2 and 100." << endl;
 				cout << "Please enter the size of the generations: " << endl;
 				cin >> size;
 
@@ -481,38 +488,46 @@ Will take the binary value as a string and convert it to decimal.
 int userBinaryRule()
 {
 	//Variables are initialised to store the binary, decimal, and loop exit.
-	char binVal[8];
+	string binVal;
 	int val = 0;
 	bool calculated = false;
+	//While the rule has not been calculated loop repeats.
 	while(!calculated)
 	{
+		//Gets user input.
 		val = 0;
 		cout << "Enter binary value" << endl;
-		scanf("%8c",binVal);
+		cin >> binVal;
+		//Counts the number of times the for loop repeats.
+		int looped = 0;
 
-		for (int i = 0; i < 8; ++i)
+		//Loops for the string length.
+		for (string::iterator i = binVal.begin(); i != binVal.end(); ++i)
 		{
-			if (binVal[i] != '1' && binVal[i] != '0')
+			//If the current value of the iterator is either not 1 and 0
+			if (*i != '1' && *i != '0')
 			{
-				i = 8;
+				//Exits for loop
+				i = binVal.end();
+				//Makes sure input is recieved once again.
 				calculated = false;
 				cout << "Value not a binary number. Try again." << endl;
 			}
 			else
 			{
+				//Makes sure loop exits if last char is valid.
 				calculated = true;
-			}
-			
-			if (calculated)
-			{
-				if (binVal[i] == '1')
+
+				//If the value is one, adds the relevant power.
+				if (*i == '1')
 				{
-					val += pow(2,7-i);
+					val += pow(2,7-looped);
 				}
 			}
-			
+			looped++;
 		}
 	}
+
 	return val;
 }
 
@@ -623,8 +638,24 @@ void getRuleInput()
 			cout << endl;
 		break;
 		case 9:
-			//Will 
-			ruleN = userBinaryRule();
+			//Will allow user to enter a binary value to compute.
+			bool correct = false;
+			while(!correct)
+			{
+				ruleN = userBinaryRule();
+				cout << "You entered rule " << ruleN << endl;
+				cout << "To confirm value enter relevant option:" << endl;
+				cout << "1) Confirm" << endl;
+				cout << "2) Re-enter value" << endl;
+				int option;
+				cin >> option;
+				//If user confirms loop exits.
+				if (option == 1)
+				{
+					correct = true;
+				}
+			}
+			
 		break;
 	}
 
@@ -703,8 +734,33 @@ void computeGenerations(int nextGeneration[], int previousGeneration[], int nGen
 	int prevBox = 0; // represents 4 bit valuecomputeGen
 	int currBox = 0; // represents 2 bit value
 	int nextBox = 0; // represents 1 bit value
+	int willBeSavedToFile=0;
+	string filename= "";
 
-	string filename= getFilename();
+
+	//Ask User if they want to print to file
+	cout << "Do you want to print the the Cellular Automata to file?"<< "\n" <<"1. Yes"<< "\n" << "2. No"<<endl;
+	cin >> willBeSavedToFile;
+
+			// While the opton entered is not one of the options or is an incorrect varaible type
+			while(!cin || willBeSavedToFile <1 || willBeSavedToFile > 2)
+			{
+				cin.clear();
+				cin.ignore(); // skips stream data
+
+
+				// ask user to  re-enter the size
+				cout << "\nThe option you have entered is invalid. Please choose a number from the options below: " << endl;
+				//Ask User if they want to print to file
+				cout << "Do you want to print the the Cellular Automata to file?"<< "\n" <<"1. Yes"<< "\n" << "2. No"<<endl;
+				cin >> willBeSavedToFile;
+			}
+
+			if(willBeSavedToFile==1){
+				//Get the filename form the user
+				filename= getFilename();
+			}
+	
 
 	cout << "-------------------------------" << endl;
 	cout<< "GENERATING CELLULLAR AUTOMATA." << endl; 
@@ -712,21 +768,6 @@ void computeGenerations(int nextGeneration[], int previousGeneration[], int nGen
 
 	// displays previous generation (first generation)
 	displayGeneration(previousGeneration, sizeGeneration);
-	//appendArrayToFile(previousGeneration,sizeGeneration, filename);
-	//PrintGenerationToFile(previousGeneration);	
-
-	for(int i = 0; i<8; i++)
-	{
-
-		cout << ::rule[i];
-
-	}
-	cout << endl;
-	cout << "-------------------------------\n" << endl;
-
-	// displays previous generation (first generation)
-	displayGeneration(previousGeneration, sizeGeneration);
-
 
 	// creates nGenerations generations
 	for (int g = 1; g < nGenerations; g++)
@@ -789,7 +830,10 @@ void computeGenerations(int nextGeneration[], int previousGeneration[], int nGen
 
 		// displays generated generation (nextGeneration)
 		displayGeneration(nextGeneration,sizeGeneration);
-		appendArrayToFile(previousGeneration,sizeGeneration, filename);
+		if (willBeSavedToFile==1){
+		//Print the generation to a file
+			appendArrayToFile(previousGeneration,sizeGeneration, filename);
+		}
 
 		// display next Generation
 		for (int k =0; k<sizeGeneration; k++)
@@ -1125,8 +1169,6 @@ void generateGameOfLife()
 
 	}
 		
-}
-
 }
 
 void load()
