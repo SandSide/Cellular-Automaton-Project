@@ -26,7 +26,7 @@ void menu()
 		cout << "-------------------------------" << endl;
 		cout << "1.	Cellular Automata." << endl;
 		cout << "2.	Game of Life." << endl;
-		cout << "3. 	Load Cellular Automata." << endl;
+		cout << "3.	Load Cellular Automata." << endl;
 		cout << "0.	Exit." << endl;
 		cout << "-------------------------------" << endl;
 		cout << "Please enter you choice: " << endl;
@@ -55,7 +55,7 @@ void menu()
 			cout << "-------------------------------" << endl;
 			cout << "1.	Cellular Automata." << endl;
 			cout << "2.	Game of Life." << endl;
-			cout << "3. Load Cellular Automata." << endl;
+			cout << "3.	Load Cellular Automata." << endl;
 			cout << "0.	Exit." << endl;
 			cout << "-------------------------------" << endl;
 			cout << "Please enter you choice: " << endl;
@@ -250,7 +250,6 @@ string getFilename(){
 }
 
 
-
 /*
 	Writes the data stored in an array into a file
 	Parameter: array[]		The Array that the user wants to print.
@@ -292,6 +291,7 @@ void appendArrayToFile(int array[],int size, string filename){
 
 
 /*
+
 	
 	Collects all data needed to run ComputeGenerations, which will create a Cellular Automata.
 */
@@ -374,7 +374,7 @@ void getDimensions(int &size,int &generations)
 		cin.clear();
 		cin.ignore(); // skips stream data
 
-		cout << "\nInvalid Input." << endl;
+		cout << "\nError: An invalid optino was entered please try aain with the options below:" << endl;
 		cout << "\n-------------------------------" << endl; 
 		cout << "   Select Automata Dimensions." << endl;
 		cout << "-------------------------------" << endl;
@@ -494,10 +494,29 @@ int userBinaryRule()
 	//While the rule has not been calculated loop repeats.
 	while(!calculated)
 	{
-		//Gets user input.
-		val = 0;
-		cout << "Enter binary value" << endl;
-		cin >> binVal;
+
+		//A boolean to test if the value entered is 8 bytes
+		bool eightByte = false;
+		while (!eightByte)
+		{
+			//Gets user input.
+			val = 0;
+			cout << "Enter binary value" << endl;
+			cin >> binVal;
+
+			//If the entered value is not 8 bytes.
+			if (binVal.size() != 8)
+			{
+				//Will inform user and recieve input again.
+				cout << "Make sure you use 8 characters." << endl;
+			}
+			else
+			{
+				//Exits input loop.
+				eightByte = true;
+			}
+		}
+
 		//Counts the number of times the for loop repeats.
 		int looped = 0;
 
@@ -524,6 +543,9 @@ int userBinaryRule()
 					val += pow(2,7-looped);
 				}
 			}
+
+			//Increments the count of the times loop has occured.
+
 			looped++;
 		}
 	}
@@ -768,6 +790,7 @@ void computeGenerations(int nextGeneration[], int previousGeneration[], int nGen
 
 	// displays previous generation (first generation)
 	displayGeneration(previousGeneration, sizeGeneration);
+	appendArrayToFile(previousGeneration,sizeGeneration, filename);
 
 	// creates nGenerations generations
 	for (int g = 1; g < nGenerations; g++)
@@ -830,6 +853,7 @@ void computeGenerations(int nextGeneration[], int previousGeneration[], int nGen
 
 		// displays generated generation (nextGeneration)
 		displayGeneration(nextGeneration,sizeGeneration);
+
 		if (willBeSavedToFile==1){
 		//Print the generation to a file
 			appendArrayToFile(previousGeneration,sizeGeneration, filename);
