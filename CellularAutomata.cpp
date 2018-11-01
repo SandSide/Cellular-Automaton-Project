@@ -151,9 +151,9 @@ void selectGen(int firGen[], int size)
 	cout << "\n-------------------------------" << endl;
 	cout << "\t Select First Generation." << endl;
 	cout << "-------------------------------" << endl;
-	cout << "1) Random" << endl;
-	cout << "2) Mid" << endl;
-	cout << "3) Custom" << endl;
+	cout << "1) Generate Random first generation." << endl;
+	cout << "2) Set middle to on/black." << endl;
+	cout << "3) Enter your own first generation." << endl;
 	cout << "-------------------------------" << endl;
 	cout << "Enter choice: " << endl;
 	cin >> choice;
