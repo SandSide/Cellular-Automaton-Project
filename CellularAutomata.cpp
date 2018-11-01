@@ -1,4 +1,5 @@
 // Patryk Jakubek - 010011784
+// Melvin Abraham - 170013110
 
 
 #include "cel.h"
@@ -173,6 +174,8 @@ void selectGen(int firGen[], int size)
 
 	while(!cin || choice <1 || choice >3)
 	{
+		cin.clear();
+		cin.ignore(); // skips stream data
 
 		cout << "Invalid Input.\n" << endl;
 		cout << "\n-------------------------------" << endl;
@@ -541,7 +544,9 @@ int userBinaryRule()
 				i = binVal.end();
 				//Makes sure input is recieved once again.
 				calculated = false;
-				cout << "Value not a binary number. Try again." << endl;
+				cin.clear();
+				cin.ignore(); // skips stream data
+				cout << "Value not a binary number. Try again:" << endl;
 			}
 			else
 			{
@@ -597,6 +602,9 @@ void getRuleInput()
 
 	while(!cin || choice < 1 || choice >9)
 	{
+
+		cin.clear();
+		cin.ignore(); // skips stream data
 
 		cout << "\nInvalid Input." << endl;
 
@@ -686,6 +694,9 @@ void getRuleInput()
 				if (option == 1)
 				{
 					correct = true;
+				}else{
+					cin.clear();
+				cin.ignore(); // skips stream data
 				}
 			}
 			
