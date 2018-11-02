@@ -1,5 +1,7 @@
-// Patryk Jakubek - 010011784
-
+//Group: 23
+//Patryk Jakubek - 170011784
+//Aditya Kumar Menon - 170025886
+// Melvin Abraham - 170013110
 
 #include "cel.h"
 
@@ -18,8 +20,10 @@ void menu()
 	// seeds the random value generator for all random value generation.
 	srand(time(0));
 	
+	//Initliaise Variables
 	int userOption = 50;
 
+	//Display the user menu
 	while(userOption != 0)
 	{
 
@@ -50,8 +54,8 @@ void menu()
 			cin.ignore();
 
 			// Send Error message
-			cout << "\nError: Your entered something that was not one of the inputs!" << endl; 
-			cout << "Enter a number from the options below." << endl;
+			cout << "Error- You have entered an invalid option!" <<endl;
+      		cout << "Please try again with the following options:" <<endl;
 
 			// Display the options to the user
 			cout << "\n-------------------------------" << endl;
@@ -75,31 +79,33 @@ void menu()
 		if(userOption == 1)
 		{
 
-			// Run the Processs
+			// Run the Cellular Automata
 			generateCellularAutomata();
 
 
 		}
 		else if (userOption == 2)
 		{
-			
+			//Run game of life
 			generateGameOfLife();
 
 		}
 		else if(userOption == 3)
-		{
+		{	
+			//Allow the user to load a file
 		 	load();
 				
 		}
 
 		else if(userOption == 4)
-		{
+		{	
+			//Let the user run a 2D automata
 		 	Generate2DAutomata();
 				
 		}
 		else if (userOption == 0)
 		{
-			
+			//Exit option
 			cout << "Exiting program." << endl;
 			exit(0);
 
@@ -110,7 +116,7 @@ void menu()
 }
 
 /*
-Sub menu method
+	Method for the sub menu
 */
 int SubMenu()
 {
@@ -132,9 +138,8 @@ int SubMenu()
 		// Under the "cin Functions" Sections
 		while(!(cin >> userOption))
 		{
-
 			// Send an error message
-			cerr << "Error: A non whole number was entered \nPlease enter a whole number:" << endl;
+			cerr << "Error- A non whole number was entered \nPlease enter a whole number:" << endl;
 			cin.clear();
 			cin.ignore(100, '\n');
 
@@ -146,7 +151,7 @@ int SubMenu()
 			isValid=true;
 		}else{
 		// Send Error message
-		cout << "Error: Your entered something that was not one of the inputs!" << endl; 
+		cout << "Error- Your entered something that was not one of the inputs!" << endl; 
 		cout << "Enter a number form the options below" << endl;
 		cout << "" << endl;
 		}
@@ -157,7 +162,9 @@ int SubMenu()
 
 void selectGen(int firGen[], int size)
 {
+	//Initliaise Variables
 	int choice;
+
 	//Print menu
 	cout << "\n-------------------------------" << endl;
 	cout << "\t Select First Generation." << endl;
@@ -170,11 +177,20 @@ void selectGen(int firGen[], int size)
 	cin >> choice;
 	cout << "-------------------------------" << endl;
 
-
+	//Run the user menu
 	while(!cin || choice <1 || choice >3)
 	{
+		// skips stream data
+		cin.clear();
+		cin.ignore(); // skips stream data
 
-		cout << "Invalid Input.\n" << endl;
+		//Send error message
+		cout << "Error- You have entered an invalid option!" << endl;
+     	cout << "Please try again with the following options:" << endl;
+
+
+
+     	//Re-display the menu
 		cout << "\n-------------------------------" << endl;
 		cout << "\t Select First Generation." << endl;
 		cout << "-------------------------------" << endl;
@@ -186,6 +202,7 @@ void selectGen(int firGen[], int size)
 		cin >> choice;
 		cout << "-------------------------------" << endl;
 	}
+
 	//Handles user choice.
 	switch(choice)
 	{
@@ -200,25 +217,34 @@ void selectGen(int firGen[], int size)
 		case 3:
 			//Allows user to pick where 1 values are placed.
 			userDefFirstGen(firGen, size);
-		break;
+			break;
+		default:
+			//If the user enters anything that is not one of the user options
+			cout << "Error- You have entered an invalid option!" <<endl;
+			cout << "Please try again with the following options:" << endl;
 	}
 }
 
 
 /*
 	Method that ask the user for a valid filename
+	Returns- A valid filename that is not already in the directory
 */
 string getFilename(){
+	//Iniliase Varaibles
 	string filename;
 	bool isValid= false;
 
+	//Ask the user to eter a filename
 	cout << ""<<endl;
 	cout <<"Enter a filename" <<endl;
 	cout << ""<<endl;
 
 	cin >>filename;
 	
+	//Add the file type
 	string name= filename+".txt";
+	
 	// create input file varaible
 	ifstream infile(name);
 
@@ -231,12 +257,13 @@ string getFilename(){
 			{
 			// Clear the terminal
 			system("clear");
-
+			
+			// skips stream data
 			cin.clear();
 			cin.ignore();
 
 			// Send Error message
-			cout << "\nError: You did not enter anything or a valid filename, try again" << endl; 
+			cout << "\nError- You did not enter valid filename, try again" << endl; 
 			cout << "" << endl;
 
 			//Get a new filename from the user
@@ -286,7 +313,7 @@ void appendArrayToFile(int array[],int size, string filename){
 
 		if(i != size-1)
 		{
-
+			//Add a comma at the end of each line for te file to be able be read properly
 			fs << ",";
 
 		}
@@ -301,9 +328,7 @@ void appendArrayToFile(int array[],int size, string filename){
 
 
 
-/*
-
-	
+/*	
 	Collects all data needed to run ComputeGenerations, which will create a Cellular Automata.
 */
 void generateCellularAutomata()
@@ -359,6 +384,7 @@ void getDimensions(int &size,int &generations)
 
 	system("clear");
 
+	//Display the menu
 	cout << "\n-------------------------------" << endl; 
 	cout << "   Select Automata Dimensions." << endl;
 	cout << "-------------------------------" << endl;
@@ -373,11 +399,13 @@ void getDimensions(int &size,int &generations)
 	cout << "Manual" << endl;
 	cout << "\t7) Custom Dimensions." << endl;
 
+	//Get an input from the user
 	cout << "-------------------------------" << endl;
 	cout << "Please enter your choice:" << endl;
 	cin >> choice;
 	cout << "-------------------------------" << endl;
 	
+	//Error mitigation
 	while(!cin || choice <1 || choice > 7)
 	{
 
@@ -385,7 +413,7 @@ void getDimensions(int &size,int &generations)
 		cin.clear();
 		cin.ignore(); // skips stream data
 
-		cout << "\nError: An invalid optino was entered please try aain with the options below:" << endl;
+		cout << "\nError- An invalid optino was entered please try aain with the options below:" << endl;
 		cout << "\n-------------------------------" << endl; 
 		cout << "   Select Automata Dimensions." << endl;
 		cout << "-------------------------------" << endl;
@@ -407,6 +435,7 @@ void getDimensions(int &size,int &generations)
 
 	}
 	
+	//Process the user optinos
 	switch(choice)
 	{
 		case 1: 
@@ -455,7 +484,7 @@ void getDimensions(int &size,int &generations)
 
 
 				// ask user to  re-enter the size
-				cout << "\nThe size you entered is invalid. Please enter a number between 2 and 100." << endl;
+				cout << "\nError- The size you entered is invalid. Please enter a number between 2 and 100." << endl;
 				cout << "Please enter the size of the generations: " << endl;
 				cin >> size;
 
@@ -474,7 +503,7 @@ void getDimensions(int &size,int &generations)
 				cin.ignore(); // skips stream data
 
 				// ask user to re-enter the size of generations
-				cout << "\nThe number you entered is invalid. Please enter a size greater than 1." << endl;
+				cout << "\nError- The number you entered is invalid. Please enter a size greater than 1." << endl;
 				cout << "Please enter the size of the generations: " << endl;
 				cin >> generations;
 
@@ -494,7 +523,8 @@ int randomRule()
 }
 
 /*
-Will take the binary value as a string and convert it to decimal.
+	Will take the binary value as a string and convert it to decimal.
+	Returns- The decimal version of the users binary input
 */
 int userBinaryRule()
 {
@@ -541,7 +571,11 @@ int userBinaryRule()
 				i = binVal.end();
 				//Makes sure input is recieved once again.
 				calculated = false;
-				cout << "Value not a binary number. Try again." << endl;
+				cin.clear();
+				cin.ignore(); // skips stream data
+				cout << "Error- You have entered an invalid option!" << endl;
+				cout << "Value not a binary number. Try again:" << endl;
+
 			}
 			else
 			{
@@ -571,8 +605,10 @@ int userBinaryRule()
 */
 void getRuleInput()
 {
+	//Initliaise the Varibles
 	int choice;
-	// 
+	
+	// Display Menu
 	int rule0 = randomRule(), rule1 = randomRule(), rule2 = randomRule();
 	cout << "\n-------------------------------" << endl;
 	cout << "\tSelect a rule to use." << endl;
@@ -590,15 +626,24 @@ void getRuleInput()
 	cout << "\t8) Custom Rule" << endl;
 	cout << "\t9) Input Rule as Binary value" << endl;
 
+	//Get the user option
 	cout << "-------------------------------" << endl;
 	cout << "Enter Choice: " << endl;
 	cin >> choice; 
 	cout << "-------------------------------" << endl;
 
+
+	//Error mitigation
 	while(!cin || choice < 1 || choice >9)
 	{
 
+		cin.clear();
+		cin.ignore(); // skips stream data
+
 		cout << "\nInvalid Input." << endl;
+
+		cout << "\nError- You have entered an invalid option!" << endl;
+		cout <<"\nPlease try again with the following options:" <<endl;
 
 		cout << "\n-------------------------------" << endl;
 		cout << "\tSelect a rule to use." << endl;
@@ -627,6 +672,7 @@ void getRuleInput()
 	// store integer
 	int ruleN;
 
+	//Process user Options
 	switch(choice)
 	{
 		case 1:
@@ -662,7 +708,7 @@ void getRuleInput()
 				cin.ignore(); // skips stream data
 
 				// ask user to enter a number
-				cout << "\nThe rule you entered is invalid. Please enter a vlue between 0-255." << endl;
+				cout << "\nError- The rule you entered is invalid. Please enter a vlue between 0-255." << endl;
 				cout << "Please enter the rule: " << endl;
 				cin >> ruleN;
 
@@ -686,6 +732,9 @@ void getRuleInput()
 				if (option == 1)
 				{
 					correct = true;
+				}else{
+					cin.clear();
+				cin.ignore(); // skips stream data
 				}
 			}
 			
@@ -697,15 +746,31 @@ void getRuleInput()
 }
 
 /*
-Will allow the user to choose the values that will constitute the first generation.
+	Will allow the user to choose the values that will constitute the first generation.
 */
 void userDefFirstGen(int gen[], int size)
-{
-	cout << "The first generation has " << size << " elements in it." << endl;
-	cout << "Enter the number of 1s/Black values you want." << endl;
+{	
 	int rep;
 	int sel;
+
+
+	//Get the first generation from the user
+	cout << "The first generation has " << size << " elements in it." << endl;
+	cout << "Enter the number of 1s/Black values you want." << endl;
 	cin >> rep;
+
+	while(!cin){
+		// skips stream data
+		cin.clear();
+		cin.ignore(); 
+
+		//Send Error message
+		cout << "\nError- You have entered an invalid option!" <<endl;
+      	cout << "Please try again with the following options:" <<endl;
+		cin >> rep;
+	}
+
+
 	for (int i = 0; i < rep; ++i)
 	{
 		bool notWithinRange = true;
@@ -735,8 +800,11 @@ void userDefFirstGen(int gen[], int size)
 	}
 }
 
-//Will calculate the binary value of a decimal number. Will fill an array with the values representing the binary value of the input decimal number.
-//val is the number being converted.
+/*
+	Will calculate the binary value of a decimal number. Will fill an array with the values representing the binary value of the input decimal number.
+	Parameter: arr[8]. Array that contains a binary number
+	Parameter: val. number being converte
+*/
 void calculateBinary(int arr[8],int val)
 {
 	//Loops until the values in the result value are computed.
@@ -783,7 +851,7 @@ void computeGenerations(int nextGeneration[], int previousGeneration[], int nGen
 
 
 				// ask user to  re-enter the size
-				cout << "\nThe option you have entered is invalid. Please choose a number from the options below: " << endl;
+				cout << "\nError- The option you have entered is invalid. Please choose a number from the options below: " << endl;
 				//Ask User if they want to print to file
 				cout << "Do you want to print the the Cellular Automata to file?"<< "\n" <<"1. Yes"<< "\n" << "2. No"<<endl;
 				cin >> willBeSavedToFile;
@@ -801,7 +869,6 @@ void computeGenerations(int nextGeneration[], int previousGeneration[], int nGen
 
 	// displays previous generation (first generation)
 	displayGeneration(previousGeneration, sizeGeneration);
-	appendArrayToFile(previousGeneration,sizeGeneration, filename);
 
 	// creates nGenerations generations
 	for (int g = 1; g < nGenerations; g++)
@@ -857,7 +924,6 @@ void computeGenerations(int nextGeneration[], int previousGeneration[], int nGen
 		    	case 5 : nextGeneration[i] = rule[2]; break;
 		    	case 6 : nextGeneration[i] = rule[1]; break;
 		    	case 7 : nextGeneration[i] = rule[0]; break;
-		    		
 			}
 		
 		}
@@ -1470,10 +1536,7 @@ void Generate2DAutomata()
 }
 
 /*
-	
 	Loads Cellular Automata loaded from an external text file
-
-
 */
 void load()
 {
@@ -1487,7 +1550,7 @@ void load()
 	string filename;
 
 	// Ask for user input
-	cout << "\nPlease enter file name: " << endl;
+	cout << "\nPlease enter the filename (Without the file type): " << endl;
 	cin >> filename;
 
 	// Add .txt to string to make it easier for opening file
@@ -1577,9 +1640,8 @@ void load()
 	}
 	else
 	{
-
-		cout << "\nTHE FILE DOES NOT EXIST." << endl;
-
+		cout << "\nError- The file ente does not exist" << endl;
+		cout << "Try again: " << endl;
 	}
 
 	// close file
@@ -1587,6 +1649,9 @@ void load()
 
 }
 
+/*
+	Main Method
+*/
 int main()
 {
 
