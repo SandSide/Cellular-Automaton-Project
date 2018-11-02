@@ -1,3 +1,7 @@
+//Patryk Jakubek - 170011784 
+//Aditya Kumar Menon – 170025886
+//Melvin Abraham – 170013110
+
 #ifndef __CELLULLARAUTOMATA_H_INCLUDED__
 #define __CELLULLARAUTOMATA_H_INCLUDED__
 
